@@ -8,12 +8,17 @@ npm install
 
 npm start
 
-# Kill command
+# Git commands
 
-## Mac
+Remove outgoing commits
+`git reset --hard origin/main`
+
+## Kill command
+
+### Mac
 
 `sudo lsof -t -i :3000 | xargs kill -9`
 
-## Windows
+### Windows
 
 `netstat -ano | findstr :3000`
