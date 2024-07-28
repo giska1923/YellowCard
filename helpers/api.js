@@ -1,4 +1,25 @@
 import api from '../api.js';
+import allTypes from '../data/core/all_types.js';
+
+// Create a map from typeData for easy lookup
+const typeMap = {};
+allTypes.forEach(type => {
+  typeMap[type.id] = type.name;
+});
+
+const mapTypeIdsToNames = obj => {
+  if (Array.isArray(obj)) {
+    obj.forEach(item => mapTypeIdsToNames(item, typeMap));
+  } else if (typeof obj === 'object' && obj !== null) {
+    for (let key in obj) {
+      if (key === 'type_id' && obj[key] in typeMap) {
+        obj[key] = typeMap[obj[key]];
+      } else {
+        mapTypeIdsToNames(obj[key], typeMap);
+      }
+    }
+  }
+};
 
 const getAllPages = async url => {
   const allData = [];
@@ -18,4 +39,4 @@ const getAllPages = async url => {
   return allData;
 };
 
-export default getAllPages;
+export { getAllPages, mapTypeIdsToNames };

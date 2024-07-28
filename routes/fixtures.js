@@ -1,6 +1,7 @@
 import express from 'express';
+import api from '../api.js';
 import appConfig from '../config.js';
-import getAllPages from '../helpers/api.js';
+import { getAllPages, mapTypeIdsToNames } from '../helpers/api.js';
 
 const router = express.Router();
 
@@ -9,6 +10,21 @@ router.get('/', async (_, res) => {
     const data = await getAllPages(
       `fixtures/?api_token=${appConfig.API_TOKEN}&includes=round.statistics&per_page=${appConfig.PER_PAGE}`
     );
+
+    res.json(data);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send({ error: err.message });
+  }
+});
+
+router.get('/page', async (_, res) => {
+  try {
+    const response = await api.get(
+      `fixtures/?api_token=${appConfig.API_TOKEN}&includes=round.statistics&per_page=${appConfig.PER_PAGE}`
+    );
+    const data = response.data;
+    mapTypeIdsToNames(data);
 
     res.json(data);
   } catch (err) {

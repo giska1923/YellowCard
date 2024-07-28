@@ -1,7 +1,7 @@
 import express from 'express';
 import api from '../api.js';
 import appConfig from '../config.js';
-import getAllPages from '../helpers/api.js';
+import { getAllPages } from '../helpers/api.js';
 
 const router = express.Router();
 
