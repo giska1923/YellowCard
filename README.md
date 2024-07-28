@@ -11,7 +11,7 @@ npm start
 # Git commands
 
 Remove outgoing commits
-`git reset --hard origin/main`
+`git reset --hard origin/master`
 
 ## Kill command
 
