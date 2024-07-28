@@ -1,3 +1,4 @@
+import fixtures from './fixtures.js';
 import rounds from './rounds.js';
 
-export { rounds };
+export { fixtures, rounds };

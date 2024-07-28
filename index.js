@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import appConfig from './config.js';
-import { rounds } from './routes/index.js';
+import { fixtures, rounds } from './routes/index.js';
 
 const app = express();
 
@@ -13,6 +13,7 @@ app.get('/', (_, res) => {
   res.send({ message: 'YELLOW CARD' });
 });
 
+app.use('/fixtures', fixtures);
 app.use('/rounds', rounds);
 
 app.listen(appConfig.PORT, () => {
