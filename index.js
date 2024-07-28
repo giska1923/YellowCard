@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import appConfig from './config.js';
-import rounds from './routes/rounds.js';
+import { rounds } from './routes/index.js';
 
 const app = express();
 
