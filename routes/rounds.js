@@ -1,7 +1,7 @@
 import express from 'express';
 import api from '../api.js';
 import appConfig from '../config.js';
-import { getAllPages } from '../helpers/api.js';
+import { getAllPages, mapTypeIdsToNames } from '../helpers/api.js';
 
 const router = express.Router();
 
@@ -11,6 +11,7 @@ router.get('/', async (_, res) => {
       `rounds/?api_token=${appConfig.API_TOKEN}&includes=fixtures.events&per_page=${appConfig.PER_PAGE}`
     );
 
+    mapTypeIdsToNames(data);
     res.json(data);
   } catch (err) {
     console.log(err.message);

@@ -33,4 +33,18 @@ router.get('/page', async (_, res) => {
   }
 });
 
+router.get('/statistics', async (_, res) => {
+  try {
+    const data = await getAllPages(
+      `fixtures/?api_token=${appConfig.API_TOKEN}&includes=statistics&per_page=${appConfig.PER_PAGE}`
+    );
+
+    mapTypeIdsToNames(data);
+    res.json(data);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send({ error: err.message });
+  }
+});
+
 export default router;
