@@ -6,7 +6,7 @@ import {
   mapTypeIdsToNames,
   flattenNestedArray,
 } from '../helpers/api.js';
-import numGoals from '../backtesting/goals.js';
+import { numGoals, averageGoals } from '../backtesting/goals.js';
 
 const router = express.Router();
 
@@ -26,6 +26,15 @@ router.get('/', async (_, res) => {
 router.get('/numGoals', async (_, res) => {
   try {
     res.json(numGoals());
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send({ error: err.message });
+  }
+});
+
+router.get('/averageGoals', async (_, res) => {
+  try {
+    res.json(averageGoals());
   } catch (err) {
     console.log(err.message);
     res.status(500).send({ error: err.message });
