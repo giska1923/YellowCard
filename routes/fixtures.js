@@ -1,7 +1,11 @@
 import express from 'express';
 import api from '../api.js';
 import appConfig from '../config.js';
-import { getAllPages, mapTypeIdsToNames } from '../helpers/api.js';
+import {
+  getAllPages,
+  mapTypeIdsToNames,
+  flattenNestedArray,
+} from '../helpers/api.js';
 
 const router = express.Router();
 
@@ -60,7 +64,8 @@ router.get('/statistics/events', async (_, res) => {
     );
 
     mapTypeIdsToNames(data);
-    res.json(data);
+    const flattenedArray = flattenNestedArray(data);
+    res.json(flattenedArray);
   } catch (err) {
     console.log(err.message);
     res.status(500).send({ error: err.message });
