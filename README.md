@@ -22,3 +22,7 @@ Remove outgoing commits
 ### Windows
 
 `netstat -ano | findstr :3000`
+
+## API Doc
+
+https://docs.sportmonks.com/football/endpoints-and-entities/endpoints
