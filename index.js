@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import appConfig from './config.js';
-import { fixtures, rounds, seasons, teams } from './routes/index.js';
+import { fixtures, leagues, rounds, seasons, teams } from './routes/index.js';
 
 const app = express();
 
@@ -14,6 +14,7 @@ app.get('/', (_, res) => {
 });
 
 app.use('/fixtures', fixtures);
+app.use('/leagues', leagues);
 app.use('/rounds', rounds);
 app.use('/seasons', seasons);
 app.use('/teams', teams);
