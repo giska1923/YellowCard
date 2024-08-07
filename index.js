@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 import appConfig from './config.js';
-import { fixtures, rounds } from './routes/index.js';
+import { fixtures, rounds, seasons, teams } from './routes/index.js';
 
 const app = express();
 
@@ -15,6 +15,8 @@ app.get('/', (_, res) => {
 
 app.use('/fixtures', fixtures);
 app.use('/rounds', rounds);
+app.use('/seasons', seasons);
+app.use('/teams', teams);
 
 app.listen(appConfig.PORT, () => {
   console.log(`Server is running on port ${appConfig.PORT}`);

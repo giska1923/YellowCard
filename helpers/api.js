@@ -21,6 +21,13 @@ const mapTypeIdsToNames = obj => {
   }
 };
 
+const flattenNestedArray = nestedArray => {
+  // Use the reduce method to concatenate all inner arrays into one array
+  return nestedArray.reduce((accumulator, currentArray) => {
+    return accumulator.concat(currentArray);
+  }, []);
+};
+
 const getAllPages = async url => {
   const allData = [];
   let page = 1;
@@ -39,4 +46,4 @@ const getAllPages = async url => {
   return allData;
 };
 
-export { getAllPages, mapTypeIdsToNames };
+export { getAllPages, mapTypeIdsToNames, flattenNestedArray };
