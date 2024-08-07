@@ -1,33 +1,39 @@
-/** 
+/**
  * Number of Goals
- * 
+ *
  * League ID: 271
- * Season ID: 17328 
+ * Season ID: 17328
  * Season Name: 2020/2021
  * Team ID: 1020
  */
-import allFixtures from '../data/allFixtures';
-
+import allFixtures from '../data/allFixtures.js';
 
 const numGoals = () => {
-  const fixtures = JSON.stringify(allFixtures);
-  const myFixtures = fixtures.filter(fixture => fixture.league_id === 271 && fixture.season_id === 17328);
+  const leagueId = 271;
+  const seasonId = 17328;
+  const participantIdToCount = 1020;
 
-  const participantIdToCount = 1020; // Replace with the ID you want to count goals for
-  let totalGoals = 0;
+  // Filter the fixtures based on league_id and season_id
+  const myFixtures = allFixtures.filter(
+    fixture => fixture.league_id === leagueId && fixture.season_id === seasonId
+  );
 
-  myFixtures.forEach(fixture => {
-      fixture.scores.forEach(score => {
-          // confirm that 2ND_HALF score equals result score
-          if (score.participant_id === participantIdToCount && score.description === '2ND_HALF'){
-              totalGoals += score.score.goals;
-          }
-      });
-  });
-
-  console.log(totalGoals)
-
-  //   return myFixtures.reduce((sum, goal) => sum + goal, 0) ;
-}
+  // Use reduce to calculate the total goals
+  return myFixtures.reduce((totalGoals, fixture) => {
+    // Use reduce again to sum the goals for the specific participant and description
+    return (
+      totalGoals +
+      fixture.scores.reduce((scoreTotal, score) => {
+        if (
+          score.participant_id === participantIdToCount &&
+          score.description === '2ND_HALF'
+        ) {
+          return scoreTotal + score.score.goals;
+        }
+        return scoreTotal;
+      }, 0)
+    );
+  }, 0);
+};
 
 export default numGoals;

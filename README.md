@@ -22,6 +22,7 @@ Remove outgoing commits
 ### Windows
 
 `netstat -ano | findstr :3000`
+`taskkill /PID typeyourPIDhere /F`
 
 ## API Doc
 
