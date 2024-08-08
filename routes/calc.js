@@ -7,14 +7,17 @@ router.get('/', async (_, res) => {
   res.status(200).send({ msg: 'CALC Page' });
 });
 
-router.get('/numGoals', async (_, res) => {
-  try {
-    res.json(numGoals());
-  } catch (err) {
-    console.log(err.message);
-    res.status(500).send({ error: err.message });
+router.get(
+  '/numGoals/:leagueId?/:seasonId?/:participantId?',
+  async (_, res) => {
+    try {
+      res.json(numGoals());
+    } catch (err) {
+      console.log(err.message);
+      res.status(500).send({ error: err.message });
+    }
   }
-});
+);
 
 router.get(
   '/averageGoals/:leagueId?/:seasonId?/:participantId?',
