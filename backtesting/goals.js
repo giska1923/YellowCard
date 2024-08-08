@@ -1,18 +1,15 @@
 /**
  * Number of Goals
  *
+ * Default values:
  * League ID: 271
  * Season ID: 17328
- * Season Name: 2020/2021
+ * Season Name: "2020/2021"
  * Team ID: 1020
  */
 import allFixtures from '../data/allFixtures.js';
 
-const numGoals = () => {
-  const leagueId = 271;
-  const seasonId = 17328;
-  const participantIdToCount = 1020;
-
+const numGoals = (leagueId = 271, seasonId = 17328, participantId = 1020) => {
   // Filter the fixtures based on league_id and season_id
   const myFixtures = allFixtures.filter(
     fixture => fixture.league_id === leagueId && fixture.season_id === seasonId
@@ -25,7 +22,7 @@ const numGoals = () => {
       totalGoals +
       fixture.scores.reduce((scoreTotal, score) => {
         if (
-          score.participant_id === participantIdToCount &&
+          score.participant_id === participantId &&
           score.description === '2ND_HALF'
         ) {
           return scoreTotal + score.score.goals;
@@ -36,7 +33,11 @@ const numGoals = () => {
   }, 0);
 };
 
-const averageGoals = (leagueId, seasonId, participantId) => {
+const averageGoals = (
+  leagueId = 271,
+  seasonId = 17328,
+  participantId = 1020
+) => {
   // Filter the fixtures based on league_id and season_id
   const myFixtures = allFixtures.filter(
     fixture => fixture.league_id === leagueId && fixture.season_id === seasonId
