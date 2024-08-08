@@ -7,33 +7,36 @@ router.get('/', async (_, res) => {
   res.status(200).send({ msg: 'CALC Page' });
 });
 
-router.get(
-  '/numGoals/:leagueId?/:seasonId?/:participantId?',
-  async (_, res) => {
-    try {
-      res.json(numGoals());
-    } catch (err) {
-      console.log(err.message);
-      res.status(500).send({ error: err.message });
-    }
+router.get('/numGoals/:leagueId?/:seasonId?/:participantId?', (_, res) => {
+  const { leagueId, seasonId, participantId } = req.params;
+  let result;
+  if (leagueId && seasonId && participantId) {
+    result = numGoals(
+      parseInt(leagueId),
+      parseInt(seasonId),
+      parseInt(participantId)
+    );
+  } else {
+    result = numGoals();
   }
-);
+  res.json(result);
+});
 
 router.get(
   '/averageGoals/:leagueId?/:seasonId?/:participantId?',
-  async (req, res) => {
-    try {
-      res.json(
-        averageGoals(
-          parseInt(req.params.leagueId || 271),
-          parseInt(req.params.seasonId || 17328),
-          parseInt(req.params.participantId || 1020)
-        )
+  (req, res) => {
+    const { leagueId, seasonId, participantId } = req.params;
+    let result;
+    if (leagueId && seasonId && participantId) {
+      result = averageGoals(
+        parseInt(leagueId),
+        parseInt(seasonId),
+        parseInt(participantId)
       );
-    } catch (err) {
-      console.log(err.message);
-      res.status(500).send({ error: err.message });
+    } else {
+      result = averageGoals();
     }
+    res.json(result);
   }
 );
 
