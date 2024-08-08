@@ -6,7 +6,6 @@ import {
   mapTypeIdsToNames,
   flattenNestedArray,
 } from '../helpers/api.js';
-import { numGoals, averageGoals } from '../backtesting/goals.js';
 
 const router = express.Router();
 
@@ -22,33 +21,6 @@ router.get('/', async (_, res) => {
     res.status(500).send({ error: err.message });
   }
 });
-
-router.get('/numGoals', async (_, res) => {
-  try {
-    res.json(numGoals());
-  } catch (err) {
-    console.log(err.message);
-    res.status(500).send({ error: err.message });
-  }
-});
-
-router.get(
-  '/averageGoals/:leagueId?/:seasonId?/:participantId?',
-  async (req, res) => {
-    try {
-      res.json(
-        averageGoals(
-          parseInt(req.params.leagueId || 271),
-          parseInt(req.params.seasonId || 17328),
-          parseInt(req.params.participantId || 1020)
-        )
-      );
-    } catch (err) {
-      console.log(err.message);
-      res.status(500).send({ error: err.message });
-    }
-  }
-);
 
 router.get('/statistics/page', async (_, res) => {
   try {
@@ -94,23 +66,6 @@ router.get('/statistics/events/scores', async (_, res) => {
     mapTypeIdsToNames(data);
     const flattenedArray = flattenNestedArray(data);
     res.json(flattenedArray);
-  } catch (err) {
-    console.log(err.message);
-    res.status(500).send({ error: err.message });
-  }
-});
-
-/**
- * Seasons
- */
-router.get('/seasons', async (_, res) => {
-  try {
-    const data = await getAllPages(
-      `seasons/?api_token=${appConfig.API_TOKEN}&per_page=${appConfig.PER_PAGE}`
-    );
-
-    mapTypeIdsToNames(data);
-    res.json(data);
   } catch (err) {
     console.log(err.message);
     res.status(500).send({ error: err.message });
