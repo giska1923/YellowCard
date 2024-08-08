@@ -9,6 +9,7 @@
  */
 import allFixtures from '../data/allFixtures.js';
 
+// Function to calculate the total number of goals
 const numGoals = (leagueId = 271, seasonId = 17328, participantId = 1020) => {
   // Filter the fixtures based on league_id and season_id
   const myFixtures = allFixtures.filter(
@@ -17,7 +18,6 @@ const numGoals = (leagueId = 271, seasonId = 17328, participantId = 1020) => {
 
   // Use reduce to calculate the total goals
   return myFixtures.reduce((totalGoals, fixture) => {
-    // Use reduce again to sum the goals for the specific participant and description
     return (
       totalGoals +
       fixture.scores.reduce((scoreTotal, score) => {
@@ -33,6 +33,7 @@ const numGoals = (leagueId = 271, seasonId = 17328, participantId = 1020) => {
   }, 0);
 };
 
+// Function to calculate the average number of goals
 const averageGoals = (
   leagueId = 271,
   seasonId = 17328,
@@ -46,7 +47,6 @@ const averageGoals = (
   // Use reduce to calculate the total goals and count the relevant scores
   const { totalGoals, count } = myFixtures.reduce(
     (acc, fixture) => {
-      // Use reduce again to sum the goals for the specific participant and description
       fixture.scores.forEach(score => {
         if (
           score.participant_id === participantId &&

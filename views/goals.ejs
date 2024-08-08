@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Goals</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="sidebar">
+      <a href="/home" id="homeTab">Home</a>
+      <a href="/goals" id="goalsTab" class="active">Goals</a>
+      <a href="/corners" id="cornersTab">Corners</a>
+    </div>
+
+    <div class="main-content">
+      <h1>Goals</h1>
+      <div class="form-container">
+        <h2>Average number of goals</h2>
+        <input type="text" id="league" placeholder="League Id" />
+        <input type="text" id="season" placeholder="Season Id" />
+        <input type="text" id="team" placeholder="Team Id" />
+        <button id="calculateBtn">Calculate</button>
+        <div class="result" id="result"></div>
+      </div>
+    </div>
+
+    <script type="module" src="/goals.js"></script>
+  </body>
+</html>

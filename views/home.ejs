@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Home</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="sidebar">
+      <a href="/home" id="homeTab" class="active">Home</a>
+      <a href="/goals" id="goalsTab">Goals</a>
+      <a href="/corners" id="cornersTab">Corners</a>
+    </div>
+
+    <div class="main-content">
+      <div class="welcome-message">
+        <h1>Welcome to Our Website!</h1>
+        <p>Get started by exploring the options in the sidebar.</p>
+      </div>
+    </div>
+
+    <script>
+      // JavaScript to handle tab switching
+      document.querySelectorAll('.sidebar a').forEach(tab => {
+        tab.addEventListener('click', function (e) {
+          // Remove 'active' class from all tabs
+          document
+            .querySelectorAll('.sidebar a')
+            .forEach(link => link.classList.remove('active'));
+
+          // Add 'active' class to the clicked tab
+          this.classList.add('active');
+        });
+      });
+    </script>
+  </body>
+</html>

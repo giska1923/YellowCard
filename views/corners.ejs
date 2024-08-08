@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Corners</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body>
+    <div class="sidebar">
+      <a href="/home" id="homeTab">Home</a>
+      <a href="/goals" id="goalsTab">Goals</a>
+      <a href="/corners" id="cornersTab" class="active">Corners</a>
+    </div>
+
+    <div class="main-content">
+      <div class="form-container">
+        <h1>Corners</h1>
+        <input type="text" id="input1" placeholder="Enter first value" />
+        <input type="text" id="input2" placeholder="Enter second value" />
+        <input type="text" id="input3" placeholder="Enter third value" />
+        <button onclick="showAlert()">Submit</button>
+        <div class="result" id="result"></div>
+      </div>
+    </div>
+
+    <script>
+      function showAlert() {
+        alert('Button clicked!');
+      }
+
+      // JavaScript to handle tab switching
+      document.querySelectorAll('.sidebar a').forEach(tab => {
+        tab.addEventListener('click', function (e) {
+          // Remove 'active' class from all tabs
+          document
+            .querySelectorAll('.sidebar a')
+            .forEach(link => link.classList.remove('active'));
+
+          // Add 'active' class to the clicked tab
+          this.classList.add('active');
+        });
+      });
+    </script>
+  </body>
+</html>
