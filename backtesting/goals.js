@@ -36,11 +36,7 @@ const numGoals = () => {
   }, 0);
 };
 
-const averageGoals = () => {
-  const leagueId = 271;
-  const seasonId = 17328;
-  const participantId = 1020;
-
+const averageGoals = (leagueId, seasonId, participantId) => {
   // Filter the fixtures based on league_id and season_id
   const myFixtures = allFixtures.filter(
     fixture => fixture.league_id === leagueId && fixture.season_id === seasonId

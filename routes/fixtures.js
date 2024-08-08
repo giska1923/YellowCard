@@ -32,14 +32,23 @@ router.get('/numGoals', async (_, res) => {
   }
 });
 
-router.get('/averageGoals', async (_, res) => {
-  try {
-    res.json(averageGoals());
-  } catch (err) {
-    console.log(err.message);
-    res.status(500).send({ error: err.message });
+router.get(
+  '/averageGoals/:leagueId?/:seasonId?/:participantId?',
+  async (req, res) => {
+    try {
+      res.json(
+        averageGoals(
+          parseInt(req.params.leagueId || 271),
+          parseInt(req.params.seasonId || 17328),
+          parseInt(req.params.participantId || 1020)
+        )
+      );
+    } catch (err) {
+      console.log(err.message);
+      res.status(500).send({ error: err.message });
+    }
   }
-});
+);
 
 router.get('/statistics/page', async (_, res) => {
   try {
