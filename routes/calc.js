@@ -7,7 +7,7 @@ router.get('/', async (_, res) => {
   res.status(200).send({ msg: 'CALC Page' });
 });
 
-router.get('/numGoals/:leagueId?/:seasonId?/:participantId?', (_, res) => {
+router.get('/numGoals/:leagueId?/:seasonId?/:participantId?', (req, res) => {
   const { leagueId, seasonId, participantId } = req.params;
   let result;
   if (leagueId && seasonId && participantId) {
