@@ -14,17 +14,18 @@
     </div>
 
     <div class="main-content">
-      <h1>Goals</h1>
       <div class="form-container">
-        <h2>Average number of goals</h2>
+        <h1>Goals</h1>
         <input type="text" id="league" placeholder="League Id" />
         <input type="text" id="season" placeholder="Season Id" />
         <input type="text" id="team" placeholder="Team Id" />
-        <button id="calculateBtn">Calculate</button>
-        <div class="result" id="result"></div>
+        <button id="calcGoalsBtn">Calculate</button>
+        <div id="result" class="result inactive">
+          <span id="avgGoals"></span>
+        </div>
       </div>
     </div>
 
-    <script type="module" src="/goals.js"></script>
+    <script type="module" src="goalsScript.js"></script>
   </body>
 </html>

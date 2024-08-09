@@ -49,7 +49,21 @@ body {
   font-weight: bolder;
   border: 1px solid #a6a4a4;
 }
+.form-container input:focus {
+  border: 1px solid #a6a4a4;
+  outline: none;
+}
+
 .result {
-  margin-top: 20px;
-  font-size: 18px;
+  margin-top: 10px 0;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: #12f7313a;
+  border: 1px solid #ddd;
+  color: #333;
+  text-align: left;
+}
+
+#result.inactive {
+  visibility: hidden;
 }

@@ -1,28 +1,26 @@
 import express from 'express';
 import path from 'path';
-import { fileURLToPath } from 'url';
-import { dirname } from 'path';
 import cors from 'cors';
 import appConfig from './config.js';
 import internal from './routes/index.js';
 
 // Get the directory name of the current module
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
+// const __filename = fileURLToPath(import.meta.url);
+// const __dirname = dirname(__filename);
 
 const app = express();
 
 // Page rendering
 app.set('view engine', 'ejs');
-app.set('views', path.join(__dirname, 'views'));
+app.set('views', path.resolve('views'));
 
 app.use(cors(appConfig.corsOptions));
 app.use(express.json());
 
-// Serve static files from the 'public' directory
-app.use(express.static(path.join(__dirname, 'scripts')));
-app.use(express.static(path.join(__dirname, 'public')));
-app.use(express.static(path.join(__dirname, 'backtesting')));
+// Serve static files from the directories
+app.use(express.static(path.resolve('scripts')));
+app.use(express.static(path.resolve('backtesting')));
+app.use(express.static(path.resolve('public')));
 
 // API Routes
 

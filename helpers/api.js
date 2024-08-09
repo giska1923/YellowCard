@@ -1,5 +1,5 @@
 import api from '../api.js';
-import allTypes from '../data/core/all_types.js';
+import allTypes from '../core/all_types.js';
 
 // Create a map from typeData for easy lookup
 const typeMap = {};

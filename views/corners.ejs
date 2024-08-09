@@ -19,14 +19,14 @@
         <input type="text" id="input1" placeholder="Enter first value" />
         <input type="text" id="input2" placeholder="Enter second value" />
         <input type="text" id="input3" placeholder="Enter third value" />
-        <button onclick="showAlert()">Submit</button>
-        <div class="result" id="result"></div>
+        <button onclick="handleClick()">Submit</button>
+        <div id="result" class="result inactive"></div>
       </div>
     </div>
 
     <script>
-      function showAlert() {
-        alert('Button clicked!');
+      function handleClick() {
+        console.log('Button clicked!');
       }
 
       // JavaScript to handle tab switching
