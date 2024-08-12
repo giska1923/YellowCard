@@ -54,6 +54,70 @@
 
         <hr />
 
+        <div class="form-row">
+          <input type="radio" id="winRate" name="ratio" value="1" />
+          <label for="winRate">Win rate</label><br />
+          <input type="radio" id="loseRate" name="ratio" value="2" />
+          <label for="loseRate">Lose rate</label><br />
+          <input type="radio" id="drawRate" name="ratio" value="3" />
+          <label for="drawRate">Draw rate</label><br />
+        </div>
+
+        <hr />
+
+        <div class="form-row">
+          <input type="radio" id="numberCorners" name="corners" value="false" />
+          <label for="numberCorners">Number of corners</label><br />
+          <input type="radio" id="averageCorners" name="corners" value="true" />
+            <label for="averageCorners">Average corners</label><br />
+        </div>
+
+        <hr />
+
+        <div class="form-row">
+          <input
+            type="radio"
+            id="numberYellowCards"
+            name="yellowCards"
+            value="false"
+          />
+          <label for="numberYellowCards">Number of yellow cards</label><br />
+          <input
+            type="radio"
+            id="averageYellowCards"
+            name="yellowCards"
+            value="true"
+          />
+            <label for="averageYellowCards">Average yellow cards</label><br />
+        </div>
+
+        <hr />
+
+        <div class="form-row">
+          <input
+            type="radio"
+            id="numberRedCards"
+            name="redCards"
+            value="false"
+          />
+          <label for="numberRedCards">Number of red cards</label><br />
+          <input
+            type="radio"
+            id="averageRedCards"
+            name="redCards"
+            value="true"
+          />
+            <label for="averageRedCards">Average red cards</label><br />
+        </div>
+
+        <hr />
+
+        <input
+          type="text"
+          id="exactNumGoals"
+          placeholder="Average number of matches with scored goals"
+        />
+
         <button id="calcGoalsBtn">Calculate</button>
         <div id="result" class="result inactive">
           <span id="calc"></span>

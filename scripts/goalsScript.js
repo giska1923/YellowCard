@@ -1,5 +1,13 @@
 import calc from './goals.js';
 
+const radioButtonValue = radioButton => {
+  return !radioButton[0].checked && !radioButton[1].checked
+    ? 0
+    : radioButton[0].checked
+    ? 1
+    : 2;
+};
+
 // Function to handle the average goals calculation
 function calcAverage() {
   console.log('calcAverage - Button clicked');
@@ -20,6 +28,24 @@ function calcAverage() {
 
   const goalsConceded = document.getElementById('conceded').checked;
 
+  const ratioElement = document.getElementsByName('ratio');
+  let ratio = 0;
+  for (let i = 0; i < ratioElement.length; i++) {
+    if (ratioElement[i].checked) ratio = ratioElement[i].value;
+  }
+
+  const corners = document.getElementsByName('corners');
+  const averageCorners = radioButtonValue(corners);
+  const yellowCards = document.getElementsByName('yellowCards');
+  const averageYellowCards = radioButtonValue(yellowCards);
+  const redCards = document.getElementsByName('redCards');
+  const averageRedCards = radioButtonValue(redCards);
+
+  const exactNumGoals =
+    document.getElementById('exactNumGoals').value === ''
+      ? -1
+      : Number(document.getElementById('exactNumGoals').value);
+
   let result;
 
   if (leagueId && seasonId && teamId) {
@@ -29,7 +55,12 @@ function calcAverage() {
       Number(teamId),
       Number(matchDuration),
       average,
-      goalsConceded
+      goalsConceded,
+      Number(ratio),
+      averageCorners,
+      averageYellowCards,
+      averageRedCards,
+      exactNumGoals
     );
   } else {
     result = calc();
