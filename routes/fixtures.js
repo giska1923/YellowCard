@@ -55,12 +55,12 @@ router.get('/statistics', async (_, res) => {
 
 /**
  * Fixtures
- * Includes: statistics, events, scores
+ * Includes: statistics, events, scores, participants
  */
-router.get('/statistics/events/scores', async (_, res) => {
+router.get('/statistics/events/scores/participants', async (_, res) => {
   try {
     const data = await getAllPages(
-      `fixtures/?api_token=${appConfig.API_TOKEN}&includes=events;statistics;scores&per_page=${appConfig.PER_PAGE}&page=2`
+      `fixtures/?api_token=${appConfig.API_TOKEN}&includes=events;statistics;scores;participants&per_page=${appConfig.PER_PAGE}&page=2`
     );
 
     mapTypeIdsToNames(data);
