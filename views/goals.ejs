@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -19,9 +19,44 @@
         <input type="text" id="league" placeholder="League Id" />
         <input type="text" id="season" placeholder="Season Id" />
         <input type="text" id="team" placeholder="Team Id" />
+
+        <div class="form-row">
+          <input type="radio" id="whole" name="duration" value="0" checked />
+          <label for="whole">Whole match</label>
+          <input type="radio" id="firstHalf" name="duration" value="1" />
+          <label for="firstHalf">First half</label>
+          <input type="radio" id="secondHalf" name="duration" value="2" />
+          <label for="secondHalf">Second half</label>
+        </div>
+
+        <div class="form-row">
+          <input
+            type="radio"
+            id="number"
+            name="dataSet"
+            value="false"
+            checked
+          />
+          <label for="number">Number</label><br />
+          <input type="radio" id="average" name="dataSet" value="true" />  
+          <label for="average">Average</label><br />
+        </div>
+
+        <div class="form-row">
+          <input
+            type="checkbox"
+            id="conceded"
+            name="conceded"
+            label="Goals conceded"
+          />
+          <label for="conceded">Goals conceded</label>
+        </div>
+
+        <hr />
+
         <button id="calcGoalsBtn">Calculate</button>
         <div id="result" class="result inactive">
-          <span id="avgGoals"></span>
+          <span id="calc"></span>
         </div>
       </div>
     </div>

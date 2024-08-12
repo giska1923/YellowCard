@@ -1,25 +1,42 @@
-import averageGoals from './goals.js';
+import calc from './goals.js';
 
 // Function to handle the average goals calculation
 function calcAverage() {
   console.log('calcAverage - Button clicked');
-
-  let avgGoals = 0;
 
   const resultElement = document.getElementById('result');
   const leagueId = document.getElementById('league').value;
   const seasonId = document.getElementById('season').value;
   const teamId = document.getElementById('team').value;
 
-  if (leagueId && seasonId && teamId) {
-    avgGoals = averageGoals(Number(leagueId), Number(seasonId), Number(teamId));
-  } else {
-    avgGoals = averageGoals();
+  const duration = document.getElementsByName('duration');
+  let matchDuration = 0;
+  for (let i = 0; i < duration.length; i++) {
+    if (duration[i].checked) matchDuration = duration[i].value;
   }
 
-  if (avgGoals) {
-    document.getElementById('avgGoals').innerText =
-      `Average number of goals: ${avgGoals}`;
+  const dataSet = document.getElementsByName('dataSet');
+  let average = dataSet[1].checked;
+
+  const goalsConceded = document.getElementById('conceded').checked;
+
+  let result;
+
+  if (leagueId && seasonId && teamId) {
+    result = calc(
+      Number(leagueId),
+      Number(seasonId),
+      Number(teamId),
+      Number(matchDuration),
+      average,
+      goalsConceded
+    );
+  } else {
+    result = calc();
+  }
+
+  if (result) {
+    document.getElementById('calc').innerText = result;
     resultElement.classList.remove('inactive');
   } else {
     resultElement.classList.add('inactive');
