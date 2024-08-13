@@ -4,10 +4,6 @@ import cors from 'cors';
 import appConfig from './config.js';
 import internal from './routes/index.js';
 
-// Get the directory name of the current module
-// const __filename = fileURLToPath(import.meta.url);
-// const __dirname = dirname(__filename);
-
 const app = express();
 
 // Page rendering
@@ -19,7 +15,6 @@ app.use(express.json());
 
 // Serve static files from the directories
 app.use(express.static(path.resolve('scripts')));
-app.use(express.static(path.resolve('backtesting')));
 app.use(express.static(path.resolve('public')));
 
 // API Routes
