@@ -1,5 +1,5 @@
 import express from 'express';
-import averageGoals from '../scripts/goals.js';
+import { calc } from '../scripts/goals.js';
 
 const router = express.Router();
 
@@ -13,13 +13,13 @@ router.get(
     const { leagueId, seasonId, participantId } = req.params;
     let result;
     if (leagueId && seasonId && participantId) {
-      result = averageGoals(
+      result = calc(
         parseInt(leagueId),
         parseInt(seasonId),
         parseInt(participantId)
       );
     } else {
-      result = averageGoals();
+      result = calc();
     }
     res.json(result);
   }

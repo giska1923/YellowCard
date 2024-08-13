@@ -1,4 +1,4 @@
-import calc from './goals.js';
+import { calc } from './goals.js';
 
 const radioButtonValue = radioButton => {
   return !radioButton[0].checked && !radioButton[1].checked

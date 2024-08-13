@@ -8,6 +8,8 @@
  * Team ID: 1020
  */
 import allFixtures from './data/allFixtures.js';
+import allTeams from './data/allTeams.js';
+import allSeasons from './data/allSeasons.js';
 
 // Function to calculate the average number of goals
 const calc = (
@@ -160,4 +162,26 @@ const calc = (
     : `Total number of goals: ${result.totalGoals}`;
 };
 
-export default calc;
+/**
+ * Helper function
+ */
+const getTeamIdByName = teamName => {
+  const team = allTeams.find(
+    t => t.name.toLowerCase() === teamName.toLowerCase()
+  );
+  return team ? team.id : null;
+};
+
+/**
+ * Helper function
+ */
+const getSeasonIdByNameAndLeague = (seasonName, leagueId) => {
+  const season = allSeasons.find(
+    s =>
+      s.name.toLowerCase() === seasonName.toLowerCase() &&
+      s.league_id === leagueId
+  );
+  return season ? season.id : null;
+};
+
+export { calc, getTeamIdByName, getSeasonIdByNameAndLeague };
