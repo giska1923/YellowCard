@@ -27,8 +27,8 @@ app.get('/', (_, res) => {
   res.status(200).render('home', { message: 'YELLOW CARD' });
 });
 
-app.get('/goals', (_, res) => {
-  res.status(200).render('goals');
+app.get('/fixtures', (_, res) => {
+  res.status(200).render('fixtures');
 });
 
 app.get('/corners', (_, res) => {

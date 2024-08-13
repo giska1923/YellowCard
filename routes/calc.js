@@ -1,5 +1,5 @@
 import express from 'express';
-import { calc } from '../scripts/goals.js';
+import { calc } from '../scripts/fixtures.js';
 
 const router = express.Router();
 

@@ -1,4 +1,4 @@
-import { calc } from './goals.js';
+import { calc } from './fixtures.js';
 
 // Function to handle the average goals calculation
 function calcAverage() {
@@ -56,7 +56,9 @@ function calcAverage() {
 }
 
 // Attach event listener to the button
-document.getElementById('calcGoalsBtn').addEventListener('click', calcAverage);
+document
+  .getElementById('calcFixturesBtn')
+  .addEventListener('click', calcAverage);
 
 // JavaScript to handle tab switching
 document.querySelectorAll('.sidebar a').forEach(tab => {
