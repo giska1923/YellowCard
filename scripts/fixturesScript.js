@@ -1,13 +1,22 @@
-import { calc } from './fixtures.js';
+import {
+  calc,
+  getLeagueIdByName,
+  getSeasonIdByNameAndLeague,
+  getTeamIdByName,
+} from './fixtures.js';
 
 // Function to handle the average goals calculation
 function calcAverage() {
   console.log('calcAverage - Button clicked');
 
   const resultElement = document.getElementById('result');
-  const leagueId = document.getElementById('league').value;
-  const seasonId = document.getElementById('season').value;
-  const teamId = document.getElementById('team').value;
+  const leagueName = document.getElementById('league').value;
+  const seasonName = document.getElementById('season').value;
+  const teamName = document.getElementById('team').value;
+
+  const leagueId = getLeagueIdByName(leagueName);
+  const seasonId = getSeasonIdByNameAndLeague(seasonName, leagueId);
+  const teamId = getTeamIdByName(teamName);
 
   const duration = document.getElementsByName('duration');
   let matchDuration = 0;

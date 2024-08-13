@@ -2,14 +2,14 @@
  * Goals
  *
  * Default values:
- * League ID: 271
- * Season ID: 17328
- * Season Name: "2020/2021"
- * Team ID: 1020
+ * League Name/ID: Superliga / 271
+ * Season Name/ID: 2020/2021 / 17328
+ * Team Name/ID: AaB / 1020
  */
 import allFixtures from './data/allFixtures.js';
-import allTeams from './data/allTeams.js';
+import allLeagues from './data/allLeagues.js';
 import allSeasons from './data/allSeasons.js';
+import allTeams from './data/allTeams.js';
 
 // Function to calculate the average number of goals
 const calc = (
@@ -148,11 +148,11 @@ const calc = (
 /**
  * Helper function
  */
-const getTeamIdByName = teamName => {
-  const team = allTeams.find(
-    t => t.name.toLowerCase() === teamName.toLowerCase()
+const getLeagueIdByName = leagueName => {
+  const league = allLeagues.find(
+    l => l.name.toLowerCase() === leagueName.toLowerCase()
   );
-  return team ? team.id : null;
+  return league ? league.id : null;
 };
 
 /**
@@ -167,4 +167,14 @@ const getSeasonIdByNameAndLeague = (seasonName, leagueId) => {
   return season ? season.id : null;
 };
 
-export { calc, getTeamIdByName, getSeasonIdByNameAndLeague };
+/**
+ * Helper function
+ */
+const getTeamIdByName = teamName => {
+  const team = allTeams.find(
+    t => t.name.toLowerCase() === teamName.toLowerCase()
+  );
+  return team ? team.id : null;
+};
+
+export { calc, getLeagueIdByName, getSeasonIdByNameAndLeague, getTeamIdByName };
