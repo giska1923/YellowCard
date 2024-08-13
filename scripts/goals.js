@@ -31,6 +31,7 @@ const calc = (
   // Iterate through my fixtures
   const result = myFixtures.reduce(
     (acc, fixture) => {
+      // Skip the iteration if the current fixture does not include participant
       if (
         fixture.participants[0].id === participantId ||
         fixture.participants[1].id === participantId
@@ -45,6 +46,7 @@ const calc = (
             : score.participant_id === participantId;
 
           if (isParticipantMatch) {
+            // Needed to calculate average number of matches with entered amount of goals
             if (
               exactNumGoals >= 0 &&
               score.participant_id === participantId &&
@@ -72,6 +74,7 @@ const calc = (
           }
         });
 
+        // Subtract second and first half time goals to get the second half only
         if (matchDuration === 2) {
           acc.totalGoals += secondHalfGoals - firstHalfGoals;
           acc.count += 1;
