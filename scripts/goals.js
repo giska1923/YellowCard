@@ -17,12 +17,7 @@ const calc = (
   seasonId = 17328,
   participantId = 1020,
   matchDuration = 0, // 0 - whole, 1 - 1st half, 2 - 2nd half,
-  average = false, // false - total number of goals, true - average goals
   goalsConceded = false, // false - goals scored, true - goals conceded
-  ratio = 0, // 0 - don't evaluate, 1 - win ratio, 2 - lose ratio, 3 - draw ratio
-  corners = 0, // 0 - don't evaluate, 1 - total number, 2 - average
-  yellowCards = 0, // 0 - don't evaluate, 1 - total number, 2 - average
-  redCards = 0, // 0 - don't evaluate, 1 - total number, 2 - average
   exactNumGoals = -1 // -1 don't evaluate, average number of matches with scored goals
 ) => {
   // Filter the fixtures based on league_id and season_id
@@ -83,61 +78,41 @@ const calc = (
         }
 
         // Iterate through fixture statistics array
-        if (corners !== 0 || yellowCards !== 0 || redCards !== 0) {
-          fixture.statistics.forEach(statistic => {
-            if (corners !== 0) {
-              if (
-                statistic.type_id === 'Corners' &&
-                statistic.participant_id === participantId
-              ) {
-                acc.totalCorners += statistic.data.value;
-              }
-            }
+        fixture.statistics.forEach(statistic => {
+          if (
+            statistic.type_id === 'Corners' &&
+            statistic.participant_id === participantId
+          ) {
+            acc.totalCorners += statistic.data.value;
+          }
 
-            if (yellowCards !== 0) {
-              if (
-                statistic.type_id === 'Yellowcards' &&
-                statistic.participant_id === participantId
-              ) {
-                acc.totalYellowCards += statistic.data.value;
-              }
-            }
+          if (
+            statistic.type_id === 'Yellowcards' &&
+            statistic.participant_id === participantId
+          ) {
+            acc.totalYellowCards += statistic.data.value;
+          }
 
-            if (redCards !== 0) {
-              if (
-                statistic.type_id === 'Redcards' &&
-                statistic.participant_id === participantId
-              ) {
-                acc.totalRedCards += statistic.data.value;
-              }
-            }
-          });
-        }
+          if (
+            statistic.type_id === 'Redcards' &&
+            statistic.participant_id === participantId
+          ) {
+            acc.totalRedCards += statistic.data.value;
+          }
+        });
 
         // Fixture participants array
-        if (ratio > 0) {
-          const participant = fixture.participants.find(
-            p => p.id === participantId
-          );
-          const opponent = fixture.participants.find(
-            p => p.id !== participantId
-          );
+        const participant = fixture.participants.find(
+          p => p.id === participantId
+        );
+        const opponent = fixture.participants.find(p => p.id !== participantId);
 
-          if (ratio === 1 && participant.meta.winner) {
-            acc.totalRatio++;
-          } else if (
-            ratio === 2 &&
-            !participant.meta.winner &&
-            opponent.meta.winner
-          ) {
-            acc.totalRatio++;
-          } else if (
-            ratio === 3 &&
-            !participant.meta.winner &&
-            !opponent.meta.winner
-          ) {
-            acc.totalRatio++;
-          }
+        if (participant.meta.winner) {
+          acc.totalWinRatio++;
+        } else if (!participant.meta.winner && opponent.meta.winner) {
+          acc.totalLoseRatio++;
+        } else if (!participant.meta.winner && !opponent.meta.winner) {
+          acc.totalDrawRatio++;
         }
       }
 
@@ -149,17 +124,25 @@ const calc = (
       totalCorners: 0,
       totalYellowCards: 0,
       totalRedCards: 0,
-      totalRatio: 0,
+      totalWinRatio: 0,
+      totalLoseRatio: 0,
+      totalDrawRatio: 0,
       totalExactNumGoals: 0,
     }
   );
 
-  // Return average or total based on the 'average' flag
-  return average
-    ? `Average number of goals: ${
-        result.count > 0 ? (result.totalGoals / result.count).toFixed(4) : 0
-      }`
-    : `Total number of goals: ${result.totalGoals}`;
+  if (!result.count) return null;
+  return {
+    ...result,
+    averageGoals: (result.totalGoals / result.count).toFixed(4),
+    averageCorners: (result.totalCorners / result.count).toFixed(4),
+    averageYellowCards: (result.totalYellowCards / result.count).toFixed(4),
+    averageRedCards: (result.totalRedCards / result.count).toFixed(4),
+    averageWinRatio: (result.totalWinRatio / result.count).toFixed(4),
+    averageLoseRatio: (result.totalLoseRatio / result.count).toFixed(4),
+    averageDrawRatio: (result.totalDrawRatio / result.count).toFixed(4),
+    averageExactNumGoals: (result.totalExactNumGoals / result.count).toFixed(4),
+  };
 };
 
 /**

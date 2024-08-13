@@ -1,13 +1,5 @@
 import { calc } from './goals.js';
 
-const radioButtonValue = radioButton => {
-  return !radioButton[0].checked && !radioButton[1].checked
-    ? 0
-    : radioButton[0].checked
-    ? 1
-    : 2;
-};
-
 // Function to handle the average goals calculation
 function calcAverage() {
   console.log('calcAverage - Button clicked');
@@ -23,23 +15,7 @@ function calcAverage() {
     if (duration[i].checked) matchDuration = duration[i].value;
   }
 
-  const dataSet = document.getElementsByName('dataSet');
-  let average = dataSet[1].checked;
-
   const goalsConceded = document.getElementById('conceded').checked;
-
-  const ratioElement = document.getElementsByName('ratio');
-  let ratio = 0;
-  for (let i = 0; i < ratioElement.length; i++) {
-    if (ratioElement[i].checked) ratio = ratioElement[i].value;
-  }
-
-  const corners = document.getElementsByName('corners');
-  const averageCorners = radioButtonValue(corners);
-  const yellowCards = document.getElementsByName('yellowCards');
-  const averageYellowCards = radioButtonValue(yellowCards);
-  const redCards = document.getElementsByName('redCards');
-  const averageRedCards = radioButtonValue(redCards);
 
   const exactNumGoals =
     document.getElementById('exactNumGoals').value === ''
@@ -54,12 +30,7 @@ function calcAverage() {
       Number(seasonId),
       Number(teamId),
       Number(matchDuration),
-      average,
       goalsConceded,
-      Number(ratio),
-      averageCorners,
-      averageYellowCards,
-      averageRedCards,
       exactNumGoals
     );
   } else {
@@ -67,7 +38,17 @@ function calcAverage() {
   }
 
   if (result) {
-    document.getElementById('calc').innerText = result;
+    document.getElementById(
+      'calc'
+    ).innerText = `Matches count: ${result.count} \n
+                   Goals count: ${result.totalGoals} <> Average number of goals: ${result.averageGoals} \n
+                   Corners count: ${result.totalCorners} <> Average number of corners: ${result.averageCorners} \n
+                   Yellow cards count: ${result.totalYellowCards} <> Average number of yellow cards: ${result.averageYellowCards} \n
+                   Red cards count: ${result.totalRedCards} <> Average number of red cards: ${result.averageRedCards} \n
+                   Win ratio: ${result.averageWinRatio} \n
+                   Lose ratio: ${result.averageLoseRatio} \n
+                   Draw ratio: ${result.averageDrawRatio} \n
+                   Average number of matches with scored goals: ${result.averageExactNumGoals}`;
     resultElement.classList.remove('inactive');
   } else {
     resultElement.classList.add('inactive');
