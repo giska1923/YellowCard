@@ -17,7 +17,6 @@ const calc = (
   seasonId = 17328,
   participantId = 1020,
   matchDuration = 0, // 0 - whole, 1 - 1st half, 2 - 2nd half,
-  goalsConceded = false, // false - goals scored, true - goals conceded
   exactNumGoals = -1 // -1 don't evaluate, average number of matches with scored goals
 ) => {
   // Filter the fixtures based on league_id and season_id
@@ -33,48 +32,49 @@ const calc = (
         fixture.participants[0].id === participantId ||
         fixture.participants[1].id === participantId
       ) {
-        let firstHalfGoals = 0;
-        let secondHalfGoals = 0;
+        let firstHalfGoalsScored = 0;
+        let secondHalfGoalsScored = 0;
+        let firstHalfGoalsConceded = 0;
+        let secondHalfGoalsConceded = 0;
+        acc.count += 1;
 
         // Iterate through fixture scores array
         fixture.scores.forEach(score => {
-          const isParticipantMatch = goalsConceded
-            ? score.participant_id !== participantId
-            : score.participant_id === participantId;
-
-          if (isParticipantMatch) {
-            // Needed to calculate average number of matches with entered amount of goals
-            if (
-              exactNumGoals >= 0 &&
-              score.participant_id === participantId &&
-              score.description === '2ND_HALF' &&
-              exactNumGoals === score.score.goals
-            ) {
-              acc.totalExactNumGoals += 1;
-            }
-            if (matchDuration === 0 && score.description === '2ND_HALF') {
-              acc.totalGoals += score.score.goals;
-              acc.count += 1;
-            } else if (
-              matchDuration === 1 &&
-              score.description === '1ST_HALF'
-            ) {
-              acc.totalGoals += score.score.goals;
-              acc.count += 1;
-            } else if (matchDuration === 2) {
-              if (score.description === '1ST_HALF') {
-                firstHalfGoals += score.score.goals;
-              } else if (score.description === '2ND_HALF') {
-                secondHalfGoals += score.score.goals;
-              }
+          // Needed to calculate average number of matches with entered amount of goals
+          if (
+            exactNumGoals >= 0 &&
+            score.participant_id === participantId &&
+            score.description === '2ND_HALF' &&
+            exactNumGoals === score.score.goals
+          ) {
+            acc.totalExactNumGoals += 1;
+          }
+          if (matchDuration === 0 && score.description === '2ND_HALF') {
+            score.participant_id === participantId
+              ? (acc.totalGoalsScored += score.score.goals)
+              : (acc.totalGoalsConceded += score.score.goals);
+          } else if (matchDuration === 1 && score.description === '1ST_HALF') {
+            score.participant_id === participantId
+              ? (acc.totalGoalsScored += score.score.goals)
+              : (acc.totalGoalsConceded += score.score.goals);
+          } else if (matchDuration === 2) {
+            if (score.description === '1ST_HALF') {
+              score.participant_id === participantId
+                ? (firstHalfGoalsScored += score.score.goals)
+                : (firstHalfGoalsConceded += score.score.goals);
+            } else if (score.description === '2ND_HALF') {
+              score.participant_id === participantId
+                ? (secondHalfGoalsScored += score.score.goals)
+                : (secondHalfGoalsConceded += score.score.goals);
             }
           }
         });
 
         // Subtract second and first half time goals to get the second half only
         if (matchDuration === 2) {
-          acc.totalGoals += secondHalfGoals - firstHalfGoals;
-          acc.count += 1;
+          acc.totalGoalsScored += secondHalfGoalsScored - firstHalfGoalsScored;
+          acc.totalGoalsConceded +=
+            secondHalfGoalsConceded - firstHalfGoalsConceded;
         }
 
         // Iterate through fixture statistics array
@@ -108,11 +108,11 @@ const calc = (
         const opponent = fixture.participants.find(p => p.id !== participantId);
 
         if (participant.meta.winner) {
-          acc.totalWinRatio++;
+          acc.totalWins++;
         } else if (!participant.meta.winner && opponent.meta.winner) {
-          acc.totalLoseRatio++;
+          acc.totalLosts++;
         } else if (!participant.meta.winner && !opponent.meta.winner) {
-          acc.totalDrawRatio++;
+          acc.totalDraws++;
         }
       }
 
@@ -120,13 +120,14 @@ const calc = (
     },
     {
       count: 0,
-      totalGoals: 0,
+      totalGoalsScored: 0,
+      totalGoalsConceded: 0,
       totalCorners: 0,
       totalYellowCards: 0,
       totalRedCards: 0,
-      totalWinRatio: 0,
-      totalLoseRatio: 0,
-      totalDrawRatio: 0,
+      totalWins: 0,
+      totalLosts: 0,
+      totalDraws: 0,
       totalExactNumGoals: 0,
     }
   );
@@ -134,13 +135,19 @@ const calc = (
   if (!result.count) return null;
   return {
     ...result,
-    averageGoals: (result.totalGoals / result.count).toFixed(4),
+    totalGoals: result.totalGoalsScored + result.totalGoalsConceded,
+    averageGoals: (
+      (result.totalGoalsScored + result.totalGoalsConceded) /
+      result.count
+    ).toFixed(4),
+    averageGoalsScored: (result.totalGoalsScored / result.count).toFixed(4),
+    averageGoalsConceded: (result.totalGoalsConceded / result.count).toFixed(4),
     averageCorners: (result.totalCorners / result.count).toFixed(4),
     averageYellowCards: (result.totalYellowCards / result.count).toFixed(4),
     averageRedCards: (result.totalRedCards / result.count).toFixed(4),
-    averageWinRatio: (result.totalWinRatio / result.count).toFixed(4),
-    averageLoseRatio: (result.totalLoseRatio / result.count).toFixed(4),
-    averageDrawRatio: (result.totalDrawRatio / result.count).toFixed(4),
+    averageWinRatio: ((result.totalWins / result.count) * 100).toFixed(2),
+    averageLoseRatio: ((result.totalLosts / result.count) * 100).toFixed(2),
+    averageDrawRatio: ((result.totalDraws / result.count) * 100).toFixed(2),
     averageExactNumGoals: (result.totalExactNumGoals / result.count).toFixed(4),
   };
 };

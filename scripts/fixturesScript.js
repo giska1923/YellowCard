@@ -15,8 +15,6 @@ function calcAverage() {
     if (duration[i].checked) matchDuration = duration[i].value;
   }
 
-  const goalsConceded = document.getElementById('conceded').checked;
-
   const exactNumGoals =
     document.getElementById('exactNumGoals').value === ''
       ? -1
@@ -30,7 +28,6 @@ function calcAverage() {
       Number(seasonId),
       Number(teamId),
       Number(matchDuration),
-      goalsConceded,
       exactNumGoals
     );
   } else {
@@ -41,13 +38,15 @@ function calcAverage() {
     document.getElementById(
       'calc'
     ).innerText = `Matches count: ${result.count} \n
-                   Goals count: ${result.totalGoals} <> Average number of goals: ${result.averageGoals} \n
-                   Corners count: ${result.totalCorners} <> Average number of corners: ${result.averageCorners} \n
-                   Yellow cards count: ${result.totalYellowCards} <> Average number of yellow cards: ${result.averageYellowCards} \n
-                   Red cards count: ${result.totalRedCards} <> Average number of red cards: ${result.averageRedCards} \n
-                   Win ratio: ${result.averageWinRatio} \n
-                   Lose ratio: ${result.averageLoseRatio} \n
-                   Draw ratio: ${result.averageDrawRatio} \n
+                   Goals count: ${result.totalGoals} <> Average: ${result.averageGoals} \n
+                   Goals scored count: ${result.totalGoalsScored} <> Average: ${result.averageGoalsScored} \n
+                   Goals conceded count: ${result.totalGoalsConceded} <> Average: ${result.averageGoalsConceded} \n
+                   Corners count: ${result.totalCorners} <> Average: ${result.averageCorners} \n
+                   Yellow cards count: ${result.totalYellowCards} <> Average: ${result.averageYellowCards} \n
+                   Red cards count: ${result.totalRedCards} <> Average: ${result.averageRedCards} \n
+                   Win ratio: ${result.averageWinRatio}% \n
+                   Lose ratio: ${result.averageLoseRatio}% \n
+                   Draw ratio: ${result.averageDrawRatio}% \n
                    Average number of matches with scored goals: ${result.averageExactNumGoals}`;
     resultElement.classList.remove('inactive');
   } else {
