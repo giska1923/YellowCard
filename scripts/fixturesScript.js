@@ -40,7 +40,11 @@ function calcAverage() {
     ).innerText = `Matches count: ${result.count} \n
                    Goals count: ${result.totalGoals} <> Average: ${result.averageGoals} \n
                    Goals scored count: ${result.totalGoalsScored} <> Average: ${result.averageGoalsScored} \n
+                   Goals scored count home: ${result.totalGoalsScoredHome} <> Average: ${result.averageGoalsScoredHome} \n
+                   Goals scored count away: ${result.totalGoalsScoredAway} <> Average: ${result.averageGoalsScoredAway} \n
                    Goals conceded count: ${result.totalGoalsConceded} <> Average: ${result.averageGoalsConceded} \n
+                   Goals conceded count home: ${result.totalGoalsConcededHome} <> Average: ${result.averageGoalsConcededHome} \n
+                   Goals conceded count away: ${result.totalGoalsConcededAway} <> Average: ${result.averageGoalsConcededAway} \n
                    Corners count: ${result.totalCorners} <> Average: ${result.averageCorners} \n
                    Yellow cards count: ${result.totalYellowCards} <> Average: ${result.averageYellowCards} \n
                    Red cards count: ${result.totalRedCards} <> Average: ${result.averageRedCards} \n
