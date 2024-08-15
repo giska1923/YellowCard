@@ -9,7 +9,6 @@
 import allFixtures from './data/allFixtures.js';
 import allLeagues from './data/allLeagues.js';
 import allSeasons from './data/allSeasons.js';
-import allTeams from './data/allTeams.js';
 
 // Function to calculate the average number of goals
 const calc = (
@@ -223,36 +222,42 @@ const calc = (
   };
 };
 
-/**
- * Helper function
- */
-const getLeagueIdByName = leagueName => {
-  const league = allLeagues.find(
-    l => l.name.toLowerCase() === leagueName.toLowerCase()
-  );
-  return league ? league.id : null;
-};
+function getAllLeagues() {
+  return allLeagues;
+}
 
-/**
- * Helper function
- */
-const getSeasonIdByNameAndLeague = (seasonName, leagueId) => {
-  const season = allSeasons.find(
-    s =>
-      s.name.toLowerCase() === seasonName.toLowerCase() &&
-      s.league_id === leagueId
+function filterSeasonsByLeagueId(leagueId) {
+  const filteredSeasons = allSeasons.filter(
+    season => season.league_id === parseInt(leagueId)
   );
-  return season ? season.id : null;
-};
-
-/**
- * Helper function
- */
-const getTeamIdByName = teamName => {
-  const team = allTeams.find(
-    t => t.name.toLowerCase() === teamName.toLowerCase()
+  return filteredSeasons.sort(
+    (a, b) => new Date(b.starting_at) - new Date(a.starting_at)
   );
-  return team ? team.id : null;
-};
+}
 
-export { calc, getLeagueIdByName, getSeasonIdByNameAndLeague, getTeamIdByName };
+function getParticipants(leagueId, seasonId) {
+  const fixtures = allFixtures.filter(
+    fixture =>
+      fixture.league_id === Number(leagueId) &&
+      fixture.season_id === Number(seasonId)
+  );
+
+  const participantsSet = new Set();
+
+  // Iterate over each fixture and add each participant to the Set
+  fixtures.forEach(fixture => {
+    fixture.participants.forEach(participant => {
+      participantsSet.add(
+        JSON.stringify({ id: participant.id, name: participant.name })
+      ); // Add unique participant to the Set
+    });
+  });
+
+  // Convert the Set back to an array of participant objects
+  const uniqueParticipants = Array.from(participantsSet).map(participant =>
+    JSON.parse(participant)
+  );
+  return uniqueParticipants;
+}
+
+export { calc, getAllLeagues, filterSeasonsByLeagueId, getParticipants };
