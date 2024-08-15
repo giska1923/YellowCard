@@ -15,7 +15,6 @@ const calc = (
   leagueId = 271,
   seasonId = 17328,
   participantId = 1020,
-  matchDuration = 0, // 0 - whole, 1 - 1st half, 2 - 2nd half,
   exactNumGoals = -1 // -1 don't evaluate, average number of matches with scored goals
 ) => {
   // Filter the fixtures based on league_id and season_id
@@ -32,6 +31,7 @@ const calc = (
         fixture.participants[1].id === participantId
       ) {
         acc.count += 1;
+
         let firstHalfGoalsScoredHome = 0;
         let firstHalfGoalsScoredAway = 0;
         let secondHalfGoalsScoredHome = 0;
@@ -40,6 +40,12 @@ const calc = (
         let firstHalfGoalsConcededAway = 0;
         let secondHalfGoalsConcededHome = 0;
         let secondHalfGoalsConcededAway = 0;
+
+        // These will store cumulative scores
+        let totalGoalsHome = 0;
+        let totalGoalsAway = 0;
+        let totalGoalsConcededHome = 0;
+        let totalGoalsConcededAway = 0;
 
         // Iterate through fixture scores array
         fixture.scores.forEach(score => {
@@ -52,62 +58,56 @@ const calc = (
           ) {
             acc.totalExactNumGoals += 1;
           }
-          if (matchDuration === 0 && score.description === '2ND_HALF') {
+          if (score.description === '1ST_HALF') {
+            // Handle first-half cumulative goals
             if (score.score.participant === 'home') {
               score.participant_id === participantId
-                ? (acc.totalGoalsScoredHome += score.score.goals)
-                : (acc.totalGoalsConcededHome += score.score.goals);
+                ? (firstHalfGoalsScoredHome = score.score.goals)
+                : (firstHalfGoalsConcededHome = score.score.goals);
             } else {
               score.participant_id === participantId
-                ? (acc.totalGoalsScoredAway += score.score.goals)
-                : (acc.totalGoalsConcededAway += score.score.goals);
+                ? (firstHalfGoalsScoredAway = score.score.goals)
+                : (firstHalfGoalsConcededAway = score.score.goals);
             }
-          } else if (matchDuration === 1 && score.description === '1ST_HALF') {
+          } else if (score.description === '2ND_HALF') {
+            // Handle second-half cumulative goals (end of match)
             if (score.score.participant === 'home') {
               score.participant_id === participantId
-                ? (acc.totalGoalsScoredHome += score.score.goals)
-                : (acc.totalGoalsConcededHome += score.score.goals);
+                ? (totalGoalsHome = score.score.goals)
+                : (totalGoalsConcededHome = score.score.goals);
             } else {
               score.participant_id === participantId
-                ? (acc.totalGoalsScoredAway += score.score.goals)
-                : (acc.totalGoalsConcededAway += score.score.goals);
-            }
-          } else if (matchDuration === 2) {
-            if (score.description === '1ST_HALF') {
-              if (score.score.participant === 'home') {
-                score.participant_id === participantId
-                  ? (firstHalfGoalsScoredHome += score.score.goals)
-                  : (firstHalfGoalsConcededHome += score.score.goals);
-              } else {
-                score.participant_id === participantId
-                  ? (firstHalfGoalsScoredAway += score.score.goals)
-                  : (firstHalfGoalsConcededAway += score.score.goals);
-              }
-            } else if (score.description === '2ND_HALF') {
-              if (score.score.participant === 'home') {
-                score.participant_id === participantId
-                  ? (secondHalfGoalsScoredHome += score.score.goals)
-                  : (secondHalfGoalsConcededHome += score.score.goals);
-              } else {
-                score.participant_id === participantId
-                  ? (secondHalfGoalsScoredAway += score.score.goals)
-                  : (secondHalfGoalsConcededAway += score.score.goals);
-              }
+                ? (totalGoalsAway = score.score.goals)
+                : (totalGoalsConcededAway = score.score.goals);
             }
           }
         });
 
-        // Subtract second and first half time goals to get the second half only
-        if (matchDuration === 2) {
-          acc.totalGoalsScoredHome +=
-            secondHalfGoalsScoredHome - firstHalfGoalsScoredHome;
-          acc.totalGoalsConcededHome +=
-            secondHalfGoalsConcededHome - firstHalfGoalsConcededHome;
-          acc.totalGoalsScoredAway +=
-            secondHalfGoalsScoredAway - firstHalfGoalsScoredAway;
-          acc.totalGoalsConcededAway +=
-            secondHalfGoalsConcededAway - firstHalfGoalsConcededAway;
-        }
+        // Calculate second-half goals by subtracting first half from total (2ND_HALF)
+        secondHalfGoalsScoredHome = totalGoalsHome - firstHalfGoalsScoredHome;
+        secondHalfGoalsScoredAway = totalGoalsAway - firstHalfGoalsScoredAway;
+        secondHalfGoalsConcededHome =
+          totalGoalsConcededHome - firstHalfGoalsConcededHome;
+        secondHalfGoalsConcededAway =
+          totalGoalsConcededAway - firstHalfGoalsConcededAway;
+
+        // Accumulate totals for full match
+        acc.totalGoalsScoredHome += totalGoalsHome;
+        acc.totalGoalsConcededHome += totalGoalsConcededHome;
+        acc.totalGoalsScoredAway += totalGoalsAway;
+        acc.totalGoalsConcededAway += totalGoalsConcededAway;
+
+        // Accumulate first half totals
+        acc.firstHalfGoalsScoredHome += firstHalfGoalsScoredHome;
+        acc.firstHalfGoalsConcededHome += firstHalfGoalsConcededHome;
+        acc.firstHalfGoalsScoredAway += firstHalfGoalsScoredAway;
+        acc.firstHalfGoalsConcededAway += firstHalfGoalsConcededAway;
+
+        // Accumulate second half totals
+        acc.secondHalfGoalsScoredHome += secondHalfGoalsScoredHome;
+        acc.secondHalfGoalsConcededHome += secondHalfGoalsConcededHome;
+        acc.secondHalfGoalsScoredAway += secondHalfGoalsScoredAway;
+        acc.secondHalfGoalsConcededAway += secondHalfGoalsConcededAway;
 
         // Iterate through fixture statistics array
         fixture.statistics.forEach(statistic => {
@@ -164,6 +164,14 @@ const calc = (
       totalGoalsScoredAway: 0,
       totalGoalsConcededHome: 0,
       totalGoalsConcededAway: 0,
+      firstHalfGoalsScoredHome: 0,
+      firstHalfGoalsScoredAway: 0,
+      firstHalfGoalsConcededHome: 0,
+      firstHalfGoalsConcededAway: 0,
+      secondHalfGoalsScoredHome: 0,
+      secondHalfGoalsScoredAway: 0,
+      secondHalfGoalsConcededHome: 0,
+      secondHalfGoalsConcededAway: 0,
       totalCorners: 0,
       totalYellowCards: 0,
       totalRedCards: 0,
@@ -205,6 +213,30 @@ const calc = (
     ).toFixed(4),
     averageGoalsScoredAway: (
       result.totalGoalsScoredAway / result.countAway
+    ).toFixed(4),
+    averageFirstHalfGoalsScoredHome: (
+      result.firstHalfGoalsScoredHome / result.countHome
+    ).toFixed(4),
+    averageSecondHalfGoalsScoredHome: (
+      result.secondHalfGoalsScoredHome / result.countHome
+    ).toFixed(4),
+    averageFirstHalfGoalsScoredAway: (
+      result.firstHalfGoalsScoredAway / result.countAway
+    ).toFixed(4),
+    averageSecondHalfGoalsScoredAway: (
+      result.secondHalfGoalsScoredAway / result.countAway
+    ).toFixed(4),
+    averageFirstHalfGoalsConcededHome: (
+      result.firstHalfGoalsConcededHome / result.countHome
+    ).toFixed(4),
+    averageSecondHalfGoalsConcededHome: (
+      result.secondHalfGoalsConcededHome / result.countHome
+    ).toFixed(4),
+    averageFirstHalfGoalsConcededAway: (
+      result.firstHalfGoalsConcededAway / result.countAway
+    ).toFixed(4),
+    averageSecondHalfGoalsConcededAway: (
+      result.secondHalfGoalsConcededAway / result.countAway
     ).toFixed(4),
     averageGoalsConcededHome: (
       result.totalGoalsConcededHome / result.countHome

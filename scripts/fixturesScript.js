@@ -14,12 +14,6 @@ function calcAverage() {
   const seasonId = document.getElementById('season').value;
   const teamId = document.getElementById('team').value;
 
-  const duration = document.getElementsByName('duration');
-  let matchDuration = 0;
-  for (let i = 0; i < duration.length; i++) {
-    if (duration[i].checked) matchDuration = duration[i].value;
-  }
-
   const exactNumGoals =
     document.getElementById('exactNumGoals').value === ''
       ? -1
@@ -33,7 +27,6 @@ function calcAverage() {
       Number(leagueId),
       Number(seasonId),
       Number(teamId),
-      Number(matchDuration),
       exactNumGoals
     );
   } else {
@@ -41,15 +34,24 @@ function calcAverage() {
   }
 
   if (result) {
-    document.getElementById('calc').innerText =
-      `Matches count: ${result.count} \n
+    document.getElementById(
+      'calc'
+    ).innerText = `Matches count: ${result.count} \n
         Goals count: ${result.totalGoals} <> Average: ${result.averageGoals} \n
         Goals scored count: ${result.totalGoalsScored} <> Average: ${result.averageGoalsScored} \n
         Goals scored count home: ${result.totalGoalsScoredHome} <> Average: ${result.averageGoalsScoredHome} \n
+        Goals scored count home 1st half: ${result.firstHalfGoalsScoredHome} <> Average: ${result.averageFirstHalfGoalsScoredHome} \n
+        Goals scored count home 2nd half: ${result.secondHalfGoalsScoredHome} <> Average: ${result.averageSecondHalfGoalsScoredHome} \n
         Goals scored count away: ${result.totalGoalsScoredAway} <> Average: ${result.averageGoalsScoredAway} \n
+        Goals scored count away 1st half: ${result.firstHalfGoalsScoredAway} <> Average: ${result.averageFirstHalfGoalsScoredAway} \n
+        Goals scored count away 2nd half: ${result.secondHalfGoalsScoredAway} <> Average: ${result.averageSecondHalfGoalsScoredAway} \n
         Goals conceded count: ${result.totalGoalsConceded} <> Average: ${result.averageGoalsConceded} \n
         Goals conceded count home: ${result.totalGoalsConcededHome} <> Average: ${result.averageGoalsConcededHome} \n
+        Goals conceded count home 1st half: ${result.firstHalfGoalsConcededHome} <> Average: ${result.averageFirstHalfGoalsConcededHome} \n
+        Goals conceded count home 2nd half: ${result.secondHalfGoalsConcededHome} <> Average: ${result.averageSecondHalfGoalsConcededHome} \n
         Goals conceded count away: ${result.totalGoalsConcededAway} <> Average: ${result.averageGoalsConcededAway} \n
+        Goals conceded count away 1st half: ${result.firstHalfGoalsConcededAway} <> Average: ${result.averageFirstHalfGoalsConcededAway} \n
+        Goals conceded count away 2nd half: ${result.secondHalfGoalsConcededAway} <> Average: ${result.averageSecondHalfGoalsConcededAway} \n
         Corners count: ${result.totalCorners} <> Average: ${result.averageCorners} \n
         Yellow cards count: ${result.totalYellowCards} <> Average: ${result.averageYellowCards} \n
         Red cards count: ${result.totalRedCards} <> Average: ${result.averageRedCards} \n
