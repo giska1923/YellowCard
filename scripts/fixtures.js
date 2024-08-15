@@ -250,7 +250,10 @@ const calc = (
     averageWinRatio: ((result.totalWins / result.count) * 100).toFixed(2),
     averageLoseRatio: ((result.totalLosts / result.count) * 100).toFixed(2),
     averageDrawRatio: ((result.totalDraws / result.count) * 100).toFixed(2),
-    averageExactNumGoals: (result.totalExactNumGoals / result.count).toFixed(4),
+    averageExactNumGoals: (
+      (result.totalExactNumGoals / result.count) *
+      100
+    ).toFixed(2),
   };
 };
 

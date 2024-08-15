@@ -58,7 +58,7 @@ function calcAverage() {
         Win ratio: ${result.averageWinRatio}% \n
         Lose ratio: ${result.averageLoseRatio}% \n
         Draw ratio: ${result.averageDrawRatio}% \n
-        Average number of matches with scored goals: ${result.averageExactNumGoals}`;
+        Percent of matches with scored entered goals: ${result.averageExactNumGoals}%`;
     resultElement.classList.remove('inactive');
   } else {
     resultElement.classList.add('inactive');
