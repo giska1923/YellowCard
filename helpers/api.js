@@ -28,6 +28,69 @@ const flattenNestedArray = nestedArray => {
   }, []);
 };
 
+/**
+ * Used only for fixtures array which has events and participants included
+ */
+const removeNonEssentials = data => {
+  data.forEach(fixture => {
+    if ('aggregate_id' in fixture) {
+      delete fixture.aggregate_id;
+    }
+    if ('group_id' in fixture) {
+      delete fixture.group_id;
+    }
+    if ('name' in fixture) {
+      delete fixture.name;
+    }
+    if ('sport_id' in fixture) {
+      delete fixture.sport_id;
+    }
+    if ('starting_at_timestamp' in fixture) {
+      delete fixture.starting_at_timestamp;
+    }
+    if ('state_id' in fixture) {
+      delete fixture.state_id;
+    }
+    if ('venue_id' in fixture) {
+      delete fixture.venue_id;
+    }
+    fixture.events.forEach(event => {
+      if ('addition' in event) {
+        delete event.addition;
+      }
+      if ('coach_id' in event) {
+        delete event.coach_id;
+      }
+      if ('extra_minute' in event) {
+        delete event.extra_minute;
+      }
+      if ('injured' in event) {
+        delete event.injured;
+      }
+      if ('on_bench' in event) {
+        delete event.on_bench;
+      }
+      if ('section' in event) {
+        delete event.section;
+      }
+    });
+    fixture.participants.forEach(participant => {
+      if ('country_id' in participant) {
+        delete participant.country_id;
+      }
+      if ('sport_id' in participant) {
+        delete participant.sport_id;
+      }
+      if ('venue_id' in participant) {
+        delete participant.venue_id;
+      }
+      if (participant.meta && 'position' in participant.meta) {
+        delete participant.meta.position;
+      }
+    });
+  });
+};
+
 const getAllPages = async url => {
   const allData = [];
   let page = 1;
@@ -46,4 +109,9 @@ const getAllPages = async url => {
   return allData;
 };
 
-export { getAllPages, mapTypeIdsToNames, flattenNestedArray };
+export {
+  getAllPages,
+  mapTypeIdsToNames,
+  flattenNestedArray,
+  removeNonEssentials,
+};

@@ -5,6 +5,7 @@ import {
   getAllPages,
   mapTypeIdsToNames,
   flattenNestedArray,
+  removeNonEssentials,
 } from '../helpers/api.js';
 
 const router = express.Router();
@@ -65,6 +66,26 @@ router.get('/statistics/events/scores/participants', async (_, res) => {
 
     mapTypeIdsToNames(data);
     const flattenedArray = flattenNestedArray(data);
+    res.json(flattenedArray);
+  } catch (err) {
+    console.log(err.message);
+    res.status(500).send({ error: err.message });
+  }
+});
+
+/**
+ * Fixtures
+ * Includes: events, statistics, participants.name, scores
+ */
+router.get('/icica', async (_, res) => {
+  try {
+    const data = await getAllPages(
+      `fixtures/?api_token=${appConfig.API_TOKEN}&includes=events;statistics;participants:name;scores&select=name&per_page=${appConfig.PER_PAGE}&page=2`
+    );
+
+    mapTypeIdsToNames(data);
+    const flattenedArray = flattenNestedArray(data);
+    removeNonEssentials(flattenedArray);
     res.json(flattenedArray);
   } catch (err) {
     console.log(err.message);
