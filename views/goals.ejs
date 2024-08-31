@@ -3,19 +3,19 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fixtures</title>
+    <title>Goals</title>
     <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
     <div class="sidebar">
       <a href="/home" id="homeTab">Home</a>
-      <a href="/fixtures" id="fixturesTab" class="active">Fixtures</a>
+      <a href="/goals" id="goalsTab" class="active">Goals</a>
       <a href="/corners" id="cornersTab">Corners</a>
     </div>
 
     <div class="main-content">
       <div class="form-container">
-        <h1>Fixtures</h1>
+        <h1>Goals</h1>
         League
         <select id="league"></select
         ><br /><br />
@@ -32,13 +32,13 @@
           placeholder="Enter number of goals for % of matches with scored goals"
         />
 
-        <button id="calcFixturesBtn">Calculate</button>
+        <button id="calcGoalsBtn">Calculate</button>
         <div id="result" class="result inactive">
           <span id="calc"></span>
         </div>
       </div>
     </div>
 
-    <script type="module" src="fixturesScript.js"></script>
+    <script type="module" src="goalsScript.js"></script>
   </body>
 </html>

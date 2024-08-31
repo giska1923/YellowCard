@@ -3,7 +3,7 @@ import {
   getAllLeagues,
   filterSeasonsByLeagueId,
   getParticipants,
-} from './fixtures.js';
+} from './goals.js';
 
 // Function to handle the average goals calculation
 function calcAverage() {
@@ -66,9 +66,7 @@ function calcAverage() {
 }
 
 // Attach event listener to the button
-document
-  .getElementById('calcFixturesBtn')
-  .addEventListener('click', calcAverage);
+document.getElementById('calcGoalsBtn').addEventListener('click', calcAverage);
 
 // JavaScript to handle tab switching
 document.querySelectorAll('.sidebar a').forEach(tab => {
