@@ -1,14 +1,14 @@
 /**
  * Goals
  *
- * Default values:
- * League Name/ID: Superliga / 271
- * Season Name/ID: 2020/2021 / 17328
- * Team Name/ID: AaB / 1020
+ * We use hardcoded leagueId seasonId pairs:
+ *    1. Superliga 2023/2024 (leagueId = 271, seasonId = 21644)
+ *    2. Premiership 2023/2024 (leagueId = 501, seasonId = 21787)
  */
 import allFixtures from './data/allFixtures.js';
 import allLeagues from './data/allLeagues.js';
 import allSeasons from './data/allSeasons.js';
+import allTeamsGoals from './data/allTeamsGoals.js';
 
 // Function to calculate the average number of goals
 const calc = (
