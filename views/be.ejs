@@ -122,19 +122,23 @@
     <div class="container">
       <h1>Goals Backtesting</h1>
 
-      <select aria-label="League" class="league-select">
+      <select aria-label="League" class="league-select" id="beLeague">
         <option>League</option>
       </select>
 
       <div class="column">
         <h4>Average goals in general</h4>
         <div class="input-group">
-          <select aria-label="More or less">
-            <option>more</option>
-            <option>less</option>
+          <select
+            aria-label="More or less"
+            id="beAvgComp"
+            name="comparisonOption"
+          >
+            <option value="more">more</option>
+            <option value="less">less</option>
           </select>
           <span>than</span>&nbsp;
-          <input type="text" placeholder="Number of goals" />
+          <input type="text" id="beAvg" placeholder="Number of goals" />
         </div>
       </div>
 
@@ -232,10 +236,12 @@
           </select>
           <input type="text" placeholder="Number of goals" />
         </div>
-        <button>CALCULATE</button>
+        <button id="beCalcBtn">CALCULATE</button>
       </div>
 
-      <div class="result" id="result">RESULT</div>
+      <div class="result" id="beResult">RESULT</div>
     </div>
+
+    <script type="module" src="beScript.js"></script>
   </body>
 </html>
