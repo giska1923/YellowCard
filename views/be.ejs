@@ -148,40 +148,44 @@
 
           <h4>Average goals</h4>
           <div class="input-group">
-            <select aria-label="More or less">
+            <select aria-label="More or less" id="beAvgHomeComp">
               <option>more</option>
               <option>less</option>
             </select>
             <span>than</span>&nbsp;
-            <input type="text" placeholder="Number of goals" />
+            <input type="text" id="beAvgHome" placeholder="Number of goals" />
           </div>
 
           <h4>Average goals scored/conceeded</h4>
           <div class="input-group">
-            <select aria-label="Scored or conceded">
+            <select aria-label="Scored or conceded" id="beAvgHomeSCOpt">
               <option>scored</option>
               <option>conceded</option>
             </select>
-            <select aria-label="More or less">
+            <select aria-label="More or less" id="beAvgHomeSCComp">
               <option>more</option>
               <option>less</option>
             </select>
             <span>than</span>&nbsp;
-            <input type="text" placeholder="Number of goals" />
+            <input type="text" id="beAvgHomeSC" placeholder="Number of goals" />
           </div>
 
           <h4>Average goals in 1H/ 2H</h4>
           <div class="input-group">
-            <select aria-label="1st or 2nd half">
+            <select aria-label="1st or 2nd half" id="beAvgHomeHalf">
               <option>1st half</option>
               <option>2nd half</option>
             </select>
-            <select aria-label="More or less">
+            <select aria-label="More or less" id="beAvgHomeHalfComp">
               <option>more</option>
               <option>less</option>
             </select>
             <span>than</span>&nbsp;
-            <input type="text" placeholder="Number of goals" />
+            <input
+              type="text"
+              id="beAvgHomeHalf"
+              placeholder="Number of goals"
+            />
           </div>
         </div>
 
@@ -231,10 +235,14 @@
       <div class="column">
         <h2>DESIRED OUTCOME</h2>
         <div class="input-group">
-          <select aria-label="Criteria">
+          <select aria-label="Criteria" id="beDesiredCriteria">
             <option>Criteria</option>
           </select>
-          <input type="text" placeholder="Number of goals" />
+          <input
+            type="text"
+            id="beDesiredGoals"
+            placeholder="Number of goals"
+          />
         </div>
         <button id="beCalcBtn">CALCULATE</button>
       </div>
