@@ -71,7 +71,7 @@ const filterMatches = (
   const fixturesMetCriteria = myFixtures.filter(match => {
     const { participants } = match;
 
-    return participants.some(participant => {
+    for (const participant of participants) {
       const participantId = participant.id;
       const teamStats = allTeamsGoals.find(
         team => team.teamId === participantId
@@ -214,16 +214,16 @@ const filterMatches = (
       ) {
         return false;
       }
+    }
 
-      return true;
-    });
+    return true;
   });
 
   // Collect desired outcome fixtures that meet desired outcome criteria
   const fixturesDesiredOutcome = myFixtures.filter(match => {
     const { participants } = match;
 
-    return participants.some(participant => {
+    for (const participant of participants) {
       const participantId = participant.id;
       const teamStats = allTeamsGoals.find(
         team => team.teamId === participantId
@@ -292,15 +292,17 @@ const filterMatches = (
           return false;
         }
       }
+    }
 
-      return true;
-    });
+    return true;
   });
 
   console.log(fixturesMetCriteria);
   console.log(fixturesDesiredOutcome);
 
-  return (fixturesDesiredOutcome.length / fixturesMetCriteria.length) * 100;
+  return fixturesMetCriteria.length > 0
+    ? (fixturesDesiredOutcome.length / fixturesMetCriteria.length) * 100
+    : 0;
 };
 
 // Function to calculate the average number of goals
@@ -315,9 +317,9 @@ const calc = (
   const options = {
     avgGoalsInGeneral: 2.8,
     avgGoalsInGeneralCondition: 'more',
-    avgGoalsHome: 2.1,
+    avgGoalsHome: 2.75,
     avgGoalsHomeCondition: 'more',
-    avgGoalsAway: 5.1,
+    avgGoalsAway: 2.9,
     avgGoalsAwayCondition: 'more',
   };
   const desiredOutcomeOptions = {
