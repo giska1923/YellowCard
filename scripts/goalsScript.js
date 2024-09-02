@@ -1,24 +1,32 @@
-import { getAllLeagues } from './goals.js';
+import { filterMatches, getAllLeagues } from './goals.js';
 
 const getNumValue = inputVal => {
-  return inputVal === '' ? NaN : Number(inputVal);
+  return inputVal === '' ? undefined : Number(inputVal);
 };
 
 function beAlgo() {
   console.log('beAlgo - Button clicked');
 
   const resultElement = document.getElementById('beResult');
-  const leagueId = document.getElementById('beLeague').value;
+  const leagueId = getNumValue(document.getElementById('beLeague').value);
+
+  // HARDCODED!
+  let seasonId;
+  if (leagueId === 271) {
+    seasonId = 21644;
+  } else {
+    seasonId = 21787;
+  }
 
   const avgGoalsInGeneralCondition = document.getElementById('beAvgComp').value;
   const avgGoalsInGeneral = getNumValue(document.getElementById('beAvg').value);
 
   const avgGoalsHomeCondition = document.getElementById('beAvgHomeComp').value;
   const avgGoalsHome = getNumValue(document.getElementById('beAvgHome').value);
-  var avgScoredHomeCondition;
-  var avgScoredHome;
-  var avgConcededHomeCondition;
-  var avgConcededHome;
+  let avgScoredHomeCondition;
+  let avgScoredHome;
+  let avgConcededHomeCondition;
+  let avgConcededHome;
   if (document.getElementById('beAvgHomeSCOpt').value === 'scored') {
     avgScoredHomeCondition = document.getElementById('beAvgHomeSCComp').value;
     avgScoredHome = getNumValue(document.getElementById('beAvgHomeSC').value);
@@ -26,10 +34,10 @@ function beAlgo() {
     avgConcededHomeCondition = document.getElementById('beAvgHomeSCComp').value;
     avgConcededHome = getNumValue(document.getElementById('beAvgHomeSC').value);
   }
-  var avg1HHomeCondition;
-  var avg1HHome;
-  var avg2HHomeCondition;
-  var avg2HHome;
+  let avg1HHomeCondition;
+  let avg1HHome;
+  let avg2HHomeCondition;
+  let avg2HHome;
   if (document.getElementById('beAvgHomeHalf').value === '1st half') {
     avg1HHomeCondition = document.getElementById('beAvgHomeHalfComp').value;
     avg1HHome = getNumValue(
@@ -44,10 +52,10 @@ function beAlgo() {
 
   const avgGoalsAwayCondition = document.getElementById('beAvgAwayComp').value;
   const avgGoalsAway = getNumValue(document.getElementById('beAvgAway').value);
-  var avgScoredAwayCondition;
-  var avgScoredAway;
-  var avgConcededAwayCondition;
-  var avgConcededAway;
+  let avgScoredAwayCondition;
+  let avgScoredAway;
+  let avgConcededAwayCondition;
+  let avgConcededAway;
   if (document.getElementById('beAvgAwaySCOpt').value === 'scored') {
     avgScoredAwayCondition = document.getElementById('beAvgAwaySCComp').value;
     avgScoredAway = getNumValue(document.getElementById('beAvgAwaySC').value);
@@ -55,10 +63,10 @@ function beAlgo() {
     avgConcededAwayCondition = document.getElementById('beAvgAwaySCComp').value;
     avgConcededAway = getNumValue(document.getElementById('beAvgAwaySC').value);
   }
-  var avg1HAwayCondition;
-  var avg1HAway;
-  var avg2HAwayCondition;
-  var avg2HAway;
+  let avg1HAwayCondition;
+  let avg1HAway;
+  let avg2HAwayCondition;
+  let avg2HAway;
   if (document.getElementById('beAvgAwayHalf').value === '1st half') {
     avg1HAwayCondition = document.getElementById('beAvgAwayHalfComp').value;
     avg1HAway = getNumValue(
@@ -71,16 +79,16 @@ function beAlgo() {
     );
   }
 
-  var desiredAvgGoalsInGeneral;
-  var desiredAvgGoalsInGeneralCondition;
-  var desiredAvgGoalsHome;
-  var desiredAvgGoalsHomeCondition;
-  var desiredAvgGoalsAway;
-  var desiredAvgGoalsAwayCondition;
-  var desiredAvg1H;
-  var desiredAvg1HCondition;
-  var desiredAvg2H;
-  var desiredAvg2HCondition;
+  let desiredAvgGoalsInGeneral;
+  let desiredAvgGoalsInGeneralCondition;
+  let desiredAvgGoalsHome;
+  let desiredAvgGoalsHomeCondition;
+  let desiredAvgGoalsAway;
+  let desiredAvgGoalsAwayCondition;
+  let desiredAvg1H;
+  let desiredAvg1HCondition;
+  let desiredAvg2H;
+  let desiredAvg2HCondition;
   if (
     document.getElementById('beDesiredCriteria').value ===
     'Total number of goals'
@@ -114,53 +122,53 @@ function beAlgo() {
     );
   }
 
-  let result = null;
-
   console.log('leagueId: ', leagueId);
   const options = {
-    avgGoalsInGeneral: Number(avgGoalsInGeneral),
+    avgGoalsInGeneral: avgGoalsInGeneral,
     avgGoalsInGeneralCondition: avgGoalsInGeneralCondition,
-    avgGoalsHome: Number(avgGoalsHome),
+    avgGoalsHome: avgGoalsHome,
     avgGoalsHomeCondition: avgGoalsHomeCondition,
-    avgGoalsAway: Number(avgGoalsAway),
+    avgGoalsAway: avgGoalsAway,
     avgGoalsAwayCondition: avgGoalsAwayCondition,
-    avgScoredHome: Number(avgScoredHome),
+    avgScoredHome: avgScoredHome,
     avgScoredHomeCondition: avgScoredHomeCondition,
-    avgConcededHome: Number(avgConcededHome),
+    avgConcededHome: avgConcededHome,
     avgConcededHomeCondition: avgConcededHomeCondition,
-    avgScoredAway: Number(avgScoredAway),
+    avgScoredAway: avgScoredAway,
     avgScoredAwayCondition: avgScoredAwayCondition,
-    avgConcededAway: Number(avgConcededAway),
+    avgConcededAway: avgConcededAway,
     avgConcededAwayCondition: avgConcededAwayCondition,
-    avg1HHome: Number(avg1HHome),
+    avg1HHome: avg1HHome,
     avg1HHomeCondition: avg1HHomeCondition,
-    avg2HHome: Number(avg2HHome),
+    avg2HHome: avg2HHome,
     avg2HHomeCondition: avg2HHomeCondition,
-    avg1HAway: Number(avg1HAway),
+    avg1HAway: avg1HAway,
     avg1HAwayCondition: avg1HAwayCondition,
-    avg2HAway: Number(avg2HAway),
+    avg2HAway: avg2HAway,
     avg2HAwayCondition: avg2HAwayCondition,
   };
   const desiredOutcomeOptions = {
-    desiredAvgGoalsInGeneral: Number(desiredAvgGoalsInGeneral),
+    desiredAvgGoalsInGeneral: desiredAvgGoalsInGeneral,
     desiredAvgGoalsInGeneralCondition: desiredAvgGoalsInGeneralCondition,
-    desiredAvgGoalsHome: Number(desiredAvgGoalsHome),
+    desiredAvgGoalsHome: desiredAvgGoalsHome,
     desiredAvgGoalsHomeCondition: desiredAvgGoalsHomeCondition,
-    desiredAvgGoalsAway: Number(desiredAvgGoalsAway),
+    desiredAvgGoalsAway: desiredAvgGoalsAway,
     desiredAvgGoalsAwayCondition: desiredAvgGoalsAwayCondition,
-    desiredAvg1H: Number(desiredAvg1H),
+    desiredAvg1H: desiredAvg1H,
     desiredAvg1HCondition: desiredAvg1HCondition,
-    desiredAvg2H: Number(desiredAvg2H),
+    desiredAvg2H: desiredAvg2H,
     desiredAvg2HCondition: desiredAvg2HCondition,
   };
 
-  console.log(options);
-  console.log(desiredOutcomeOptions);
+  const result = filterMatches(
+    leagueId,
+    seasonId,
+    options,
+    desiredOutcomeOptions
+  );
 
   if (result) {
-    document.getElementById(
-      'calc'
-    ).innerText = `$ { result.averageExactNumGoals } %`;
+    resultElement.innerText = `${result} %`;
     resultElement.classList.remove('inactive');
   } else {
     resultElement.classList.add('inactive');
