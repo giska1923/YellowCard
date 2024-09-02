@@ -31,6 +31,10 @@ app.get('/goals', (_, res) => {
   res.status(200).render('goals');
 });
 
+app.get('/be', (_, res) => {
+  res.status(200).render('be');
+});
+
 app.get('/corners', (_, res) => {
   res.status(200).render('corners');
 });
