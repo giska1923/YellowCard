@@ -83,7 +83,7 @@ const filterMatches = (
 
       // Criteria 1: Average total number of goals
       if (
-        avgGoalsInGeneral !== undefined &&
+        avgGoalsInGeneral !== NaN &&
         !compare(
           teamStats.averageGoals,
           avgGoalsInGeneral,
@@ -95,7 +95,7 @@ const filterMatches = (
 
       // Criteria 2: Average goals home team
       if (
-        avgGoalsHome !== undefined &&
+        avgGoalsHome !== NaN &&
         participant.meta.location === 'home' &&
         !compare(teamStats.averageGoals, avgGoalsHome, avgGoalsHomeCondition)
       ) {
@@ -104,7 +104,7 @@ const filterMatches = (
 
       // Criteria 3: Average goals away team
       if (
-        avgGoalsAway !== undefined &&
+        avgGoalsAway !== NaN &&
         participant.meta.location === 'away' &&
         !compare(teamStats.averageGoals, avgGoalsAway, avgGoalsAwayCondition)
       ) {
@@ -113,7 +113,7 @@ const filterMatches = (
 
       // Criteria 4: Average goals home team scored
       if (
-        avgScoredHome !== undefined &&
+        avgScoredHome !== NaN &&
         participant.meta.location === 'home' &&
         !compare(
           teamStats.averageGoalsScoredHome,
@@ -126,7 +126,7 @@ const filterMatches = (
 
       // Criteria 5: Average goals home team conceded
       if (
-        avgConcededHome !== undefined &&
+        avgConcededHome !== NaN &&
         participant.meta.location === 'home' &&
         !compare(
           teamStats.averageGoalsConcededHome,
@@ -139,7 +139,7 @@ const filterMatches = (
 
       // Criteria 6: Average goals away team scored
       if (
-        avgScoredAway !== undefined &&
+        avgScoredAway !== NaN &&
         participant.meta.location === 'away' &&
         !compare(
           teamStats.averageGoalsScoredAway,
@@ -152,7 +152,7 @@ const filterMatches = (
 
       // Criteria 7: Average goals away team conceded
       if (
-        avgConcededAway !== undefined &&
+        avgConcededAway !== NaN &&
         participant.meta.location === 'away' &&
         !compare(
           teamStats.averageGoalsConcededAway,
@@ -165,7 +165,7 @@ const filterMatches = (
 
       // Criteria 8: Average goals home team scored in 1H
       if (
-        avg1HHome !== undefined &&
+        avg1HHome !== NaN &&
         participant.meta.location === 'home' &&
         !compare(
           teamStats.averageFirstHalfGoalsScoredHome,
@@ -178,7 +178,7 @@ const filterMatches = (
 
       // Criteria 9: Average goals home team scored in 2H
       if (
-        avg2HHome !== undefined &&
+        avg2HHome !== NaN &&
         participant.meta.location === 'home' &&
         !compare(
           teamStats.averageSecondHalfGoalsScoredHome,
@@ -191,7 +191,7 @@ const filterMatches = (
 
       // Criteria 10: Average goals away team scored in 1H
       if (
-        avg1HAway !== undefined &&
+        avg1HAway !== NaN &&
         participant.meta.location === 'away' &&
         !compare(
           teamStats.averageFirstHalfGoalsScoredAway,
@@ -204,7 +204,7 @@ const filterMatches = (
 
       // Criteria 11: Average goals away team scored in 2H
       if (
-        avg2HAway !== undefined &&
+        avg2HAway !== NaN &&
         participant.meta.location === 'away' &&
         !compare(
           teamStats.averageSecondHalfGoalsScoredAway,
@@ -235,7 +235,7 @@ const filterMatches = (
 
       // Criteria 1: Average total number of goals
       if (
-        desiredAvgGoalsInGeneral !== undefined &&
+        desiredAvgGoalsInGeneral !== NaN &&
         !compare(
           teamStats.averageGoals,
           desiredAvgGoalsInGeneral,
@@ -247,7 +247,7 @@ const filterMatches = (
 
       // Criteria 2: Average goals home team
       if (
-        desiredAvgGoalsHome !== undefined &&
+        desiredAvgGoalsHome !== NaN &&
         participant.meta.location === 'home' &&
         !compare(
           teamStats.averageGoals,
@@ -260,7 +260,7 @@ const filterMatches = (
 
       // Criteria 3: Average goals away team
       if (
-        desiredAvgGoalsAway !== undefined &&
+        desiredAvgGoalsAway !== NaN &&
         participant.meta.location === 'away' &&
         !compare(
           teamStats.averageGoals,
@@ -272,7 +272,7 @@ const filterMatches = (
       }
 
       // Criteria 4: Average goals 1st half
-      if (desiredAvg1H !== undefined) {
+      if (desiredAvg1H !== NaN) {
         const statAvg =
           (teamStats.averageFirstHalfGoalsScoredHome +
             teamStats.averageFirstHalfGoalsScoredAway) /
@@ -283,7 +283,7 @@ const filterMatches = (
       }
 
       // Criteria 5: Average goals 2nd half
-      if (desiredAvg2H !== undefined) {
+      if (desiredAvg2H !== NaN) {
         const statAvg =
           (teamStats.averageSecondHalfGoalsScoredHome +
             teamStats.averageSecondHalfGoalsScoredAway) /
