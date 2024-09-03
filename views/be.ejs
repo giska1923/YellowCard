@@ -3,39 +3,305 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Goals</title>
-    <link rel="stylesheet" href="/styles.css" />
+    <title>Goals Backtesting</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        display: flex;
+        min-height: 100vh;
+      }
+
+      .sidebar {
+        width: 200px;
+        background-color: #333;
+        color: #f2f2f2;
+        padding: 15px;
+        box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        display: flex;
+        flex-direction: column;
+      }
+      .sidebar a {
+        color: #f2f2f2;
+        text-decoration: none;
+        padding: 10px;
+        margin: 5px 0;
+        border-radius: 4px;
+        display: block;
+      }
+      .sidebar a.active {
+        color: #12f730;
+      }
+      .sidebar a:hover {
+        background-color: #575757;
+      }
+
+      .main-content {
+        flex: 1;
+        padding: 20px;
+        background-color: #f4f4f4;
+      }
+
+      .container {
+        width: 80%;
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
+        margin-bottom: 20px;
+      }
+
+      h1 {
+        font-size: 28px;
+        font-weight: bold;
+        text-align: center;
+        margin-bottom: 20px;
+      }
+
+      select,
+      input[type='text'],
+      button {
+        padding: 10px;
+        margin: 10px 0;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        font-size: 14px;
+        width: 100%;
+      }
+
+      .league-select {
+        font-weight: 700;
+        width: 20rem;
+        margin-left: 14px;
+      }
+
+      button {
+        background-color: #90ee90;
+        color: #000;
+        border: none;
+        cursor: pointer;
+      }
+
+      .row {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+
+      .column {
+        flex: 1;
+        margin: 10px;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        background-color: #f9f9f9;
+        min-width: 280px;
+      }
+
+      .input-group {
+        display: flex;
+        align-items: center;
+        margin-bottom: 10px;
+      }
+
+      .input-group select,
+      .input-group input {
+        margin-right: 10px;
+        flex: 1;
+      }
+
+      .result {
+        background-color: #ccffcc;
+        text-align: center;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 10px;
+        font-size: 20px;
+        font-weight: bold;
+      }
+
+      @media (max-width: 768px) {
+        .row {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .column {
+          flex: 1 1 100%;
+          max-width: 100%;
+          margin: 10px 0;
+        }
+
+        h1 {
+          font-size: 20px;
+        }
+
+        button {
+          font-size: 14px;
+        }
+      }
+    </style>
   </head>
   <body>
     <div class="sidebar">
       <a href="/home" id="homeTab">Home</a>
-      <a href="/goals" id="goalsTab" class="active">Goals</a>
+      <a href="/be" id="beTab" class="active">Backtesting</a>
+      <a href="/goals" id="goalsTab">Goals</a>
       <a href="/corners" id="cornersTab">Corners</a>
     </div>
 
     <div class="main-content">
-      <div class="form-container">
-        <h1>Goals</h1>
-        League
-        <select id="league"></select
-        ><br /><br />
-        Season
-        <select id="season"></select
-        ><br /><br />
-        Team
-        <select id="team"></select>
-        <br /><br />
+      <div class="container">
+        <h1>Goals Backtesting</h1>
 
-        <input
-          type="text"
-          id="exactNumGoals"
-          placeholder="Enter number of goals for % of matches with scored goals"
-        />
+        <select aria-label="League" class="league-select" id="beLeague">
+          <option>League</option>
+        </select>
 
-        <button id="calcGoalsBtn">Calculate</button>
-        <div id="result" class="result inactive">
-          <span id="calc"></span>
+        <div class="column">
+          <h4>Average goals in general</h4>
+          <div class="input-group">
+            <select
+              aria-label="More or less"
+              id="beAvgComp"
+              name="comparisonOption"
+            >
+              <option value="more">more</option>
+              <option value="less">less</option>
+            </select>
+            <span>than</span>&nbsp;
+            <input type="text" id="beAvg" placeholder="Number of goals" />
+          </div>
         </div>
+
+        <div class="row">
+          <div class="column">
+            <h2>HOME TEAM</h2>
+
+            <h4>Average goals</h4>
+            <div class="input-group">
+              <select aria-label="More or less" id="beAvgHomeComp">
+                <option>more</option>
+                <option>less</option>
+              </select>
+              <span>than</span>&nbsp;
+              <input type="text" id="beAvgHome" placeholder="Number of goals" />
+            </div>
+
+            <h4>Average goals scored/conceded</h4>
+            <div class="input-group">
+              <select aria-label="Scored or conceded" id="beAvgHomeSCOpt">
+                <option>scored</option>
+                <option>conceded</option>
+              </select>
+              <select aria-label="More or less" id="beAvgHomeSCComp">
+                <option>more</option>
+                <option>less</option>
+              </select>
+              <span>than</span>&nbsp;
+              <input
+                type="text"
+                id="beAvgHomeSC"
+                placeholder="Number of goals"
+              />
+            </div>
+
+            <h4>Average goals in 1H/2H</h4>
+            <div class="input-group">
+              <select aria-label="1st or 2nd half" id="beAvgHomeHalf">
+                <option>1st half</option>
+                <option>2nd half</option>
+              </select>
+              <select aria-label="More or less" id="beAvgHomeHalfComp">
+                <option>more</option>
+                <option>less</option>
+              </select>
+              <span>than</span>&nbsp;
+              <input
+                type="text"
+                id="beAvgHomeHalfGoals"
+                placeholder="Number of goals"
+              />
+            </div>
+          </div>
+
+          <div class="column">
+            <h2>AWAY TEAM</h2>
+
+            <h4>Average goals</h4>
+            <div class="input-group">
+              <select aria-label="More or less" id="beAvgAwayComp">
+                <option>more</option>
+                <option>less</option>
+              </select>
+              <span>than</span>&nbsp;
+              <input type="text" id="beAvgAway" placeholder="Number of goals" />
+            </div>
+
+            <h4>Average goals scored/conceded</h4>
+            <div class="input-group">
+              <select aria-label="Scored or conceded" id="beAvgAwaySCOpt">
+                <option>scored</option>
+                <option>conceded</option>
+              </select>
+              <select aria-label="More or less" id="beAvgAwaySCComp">
+                <option>more</option>
+                <option>less</option>
+              </select>
+              <span>than</span>&nbsp;
+              <input
+                type="text"
+                id="beAvgAwaySC"
+                placeholder="Number of goals"
+              />
+            </div>
+
+            <h4>Average goals in 1H/2H</h4>
+            <div class="input-group">
+              <select aria-label="1st or 2nd half" id="beAvgAwayHalf">
+                <option>1st half</option>
+                <option>2nd half</option>
+              </select>
+              <select aria-label="More or less" id="beAvgAwayHalfComp">
+                <option>more</option>
+                <option>less</option>
+              </select>
+              <span>than</span>&nbsp;
+              <input
+                type="text"
+                id="beAvgAwayHalfGoals"
+                placeholder="Number of goals"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div class="column">
+          <h2>DESIRED OUTCOME</h2>
+          <div class="input-group">
+            <select aria-label="Criteria" id="beDesiredCriteria">
+              <option>Total number of goals</option>
+              <option>1st Half</option>
+              <option>2nd Half</option>
+              <option>Home</option>
+              <option>Away</option>
+            </select>
+            <select aria-label="More or less" id="beDesiredComp">
+              <option>more</option>
+              <option>less</option>
+            </select>
+            <input
+              type="text"
+              id="beDesiredGoals"
+              placeholder="Number of goals"
+            />
+          </div>
+          <button id="beCalcBtn">CALCULATE</button>
+        </div>
+
+        <div class="result" id="beResult">RESULT</div>
       </div>
     </div>
 
