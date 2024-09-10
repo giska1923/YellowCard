@@ -174,7 +174,8 @@ function beAlgo() {
     resultElement.innerText = `${result} %`;
     resultElement.classList.remove('inactive');
   } else {
-    resultElement.classList.add('inactive');
+    resultElement.innerText = '0%';
+    resultElement.classList.remove('inactive');
   }
 }
 
