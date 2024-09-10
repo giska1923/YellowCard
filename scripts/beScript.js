@@ -18,9 +18,8 @@ function beAlgo() {
     seasonId = 21787;
   }
 
-  const avgGoalsInGeneralCondition = document.getElementById('beAvgComp').value;
-  const avgGoalsInGeneral = getNumValue(document.getElementById('beAvg').value);
-
+  const avgGoalsHCondition = document.getElementById('beAvgHComp').value;
+  const avgGoalsH = getNumValue(document.getElementById('beAvgH').value);
   const avgGoalsHomeCondition = document.getElementById('beAvgHomeComp').value;
   const avgGoalsHome = getNumValue(document.getElementById('beAvgHome').value);
   let avgScoredHomeCondition;
@@ -50,6 +49,8 @@ function beAlgo() {
     );
   }
 
+  const avgGoalsACondition = document.getElementById('beAvgAComp').value;
+  const avgGoalsA = getNumValue(document.getElementById('beAvgA').value);
   const avgGoalsAwayCondition = document.getElementById('beAvgAwayComp').value;
   const avgGoalsAway = getNumValue(document.getElementById('beAvgAway').value);
   let avgScoredAwayCondition;
@@ -124,8 +125,10 @@ function beAlgo() {
 
   console.log('leagueId: ', leagueId);
   const options = {
-    avgGoalsInGeneral: avgGoalsInGeneral,
-    avgGoalsInGeneralCondition: avgGoalsInGeneralCondition,
+    avgGoalsH: avgGoalsH,
+    avgGoalsHCondition: avgGoalsHCondition,
+    avgGoalsA: avgGoalsA,
+    avgGoalsACondition: avgGoalsACondition,
     avgGoalsHome: avgGoalsHome,
     avgGoalsHomeCondition: avgGoalsHomeCondition,
     avgGoalsAway: avgGoalsAway,

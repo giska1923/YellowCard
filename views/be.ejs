@@ -160,27 +160,25 @@
           <option>League</option>
         </select>
 
-        <div class="column">
-          <h4>Average goals in general</h4>
-          <div class="input-group">
-            <select
-              aria-label="More or less"
-              id="beAvgComp"
-              name="comparisonOption"
-            >
-              <option value="more">more</option>
-              <option value="less">less</option>
-            </select>
-            <span>than</span>&nbsp;
-            <input type="text" id="beAvg" placeholder="Number of goals" />
-          </div>
-        </div>
-
         <div class="row">
           <div class="column">
             <h2>HOME TEAM</h2>
 
-            <h4>Average goals</h4>
+            <h4>Average goals in general</h4>
+            <div class="input-group">
+              <select
+                aria-label="More or less"
+                id="beAvgHComp"
+                name="comparisonOption"
+              >
+                <option value="more">more</option>
+                <option value="less">less</option>
+              </select>
+              <span>than</span>&nbsp;
+              <input type="text" id="beAvgH" placeholder="Number of goals" />
+            </div>
+
+            <h4>Average goals at Home</h4>
             <div class="input-group">
               <select aria-label="More or less" id="beAvgHomeComp">
                 <option>more</option>
@@ -230,7 +228,21 @@
           <div class="column">
             <h2>AWAY TEAM</h2>
 
-            <h4>Average goals</h4>
+            <h4>Average goals in general</h4>
+            <div class="input-group">
+              <select
+                aria-label="More or less"
+                id="beAvgAComp"
+                name="comparisonOption"
+              >
+                <option value="more">more</option>
+                <option value="less">less</option>
+              </select>
+              <span>than</span>&nbsp;
+              <input type="text" id="beAvgA" placeholder="Number of goals" />
+            </div>
+
+            <h4>Average goals Away</h4>
             <div class="input-group">
               <select aria-label="More or less" id="beAvgAwayComp">
                 <option>more</option>
