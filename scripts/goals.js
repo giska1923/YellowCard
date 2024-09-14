@@ -766,7 +766,7 @@ const findAllTeams = allTeams => {
     return {
       leagueId: team.leagueId,
       seasonId: team.seasonId,
-      participantId: team.teamId,
+      teamId: team.teamId,
     };
   });
   return teams;
