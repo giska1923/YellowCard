@@ -513,6 +513,28 @@ const calc = (
         secondHalfGoalsConcededAway =
           totalGoalsConcededAway - firstHalfGoalsConcededAway;
 
+        // Add match scores
+        acc.fixtures.push({
+          firstHalfGoalsScored:
+            firstHalfGoalsScoredHome + firstHalfGoalsScoredAway,
+          firstHalfGoalsConceded:
+            firstHalfGoalsConcededHome + firstHalfGoalsConcededAway,
+          secondHalfGoalsScored:
+            secondHalfGoalsScoredHome + secondHalfGoalsScoredAway,
+          secondHalfGoalsConceded:
+            secondHalfGoalsConcededHome + secondHalfGoalsConcededAway,
+          totalGoalsScored:
+            firstHalfGoalsScoredHome +
+            firstHalfGoalsScoredAway +
+            secondHalfGoalsScoredHome +
+            secondHalfGoalsScoredAway,
+          totalGoalsConceded:
+            firstHalfGoalsConcededHome +
+            firstHalfGoalsConcededAway +
+            secondHalfGoalsConcededHome +
+            secondHalfGoalsConcededAway,
+        });
+
         // Accumulate totals for full match
         acc.totalGoalsScoredHome += totalGoalsHome;
         acc.totalGoalsConcededHome += totalGoalsConcededHome;
@@ -601,12 +623,17 @@ const calc = (
       totalLosts: 0,
       totalDraws: 0,
       totalExactNumGoals: 0,
+      fixtures: [],
     }
   );
 
   if (!result.count) return null;
-  return {
+
+  const ret = {
     ...result,
+    leagueId,
+    seasonId,
+    participantId,
     totalGoals:
       result.totalGoalsScoredHome +
       result.totalGoalsScoredAway +
@@ -615,68 +642,84 @@ const calc = (
     totalGoalsScored: result.totalGoalsScoredHome + result.totalGoalsScoredAway,
     totalGoalsConceded:
       result.totalGoalsConcededHome + result.totalGoalsConcededAway,
-    averageGoals: (
-      (result.totalGoalsScoredHome +
-        result.totalGoalsScoredAway +
-        result.totalGoalsConcededHome +
-        result.totalGoalsConcededAway) /
-      result.count
-    ).toFixed(4),
-    averageGoalsScored: (
-      (result.totalGoalsScoredHome + result.totalGoalsScoredAway) /
-      result.count
-    ).toFixed(4),
-    averageGoalsConceded: (
-      (result.totalGoalsConcededHome + result.totalGoalsConcededAway) /
-      result.count
-    ).toFixed(4),
-    averageGoalsScoredHome: (
-      result.totalGoalsScoredHome / result.countHome
-    ).toFixed(4),
-    averageGoalsScoredAway: (
-      result.totalGoalsScoredAway / result.countAway
-    ).toFixed(4),
-    averageFirstHalfGoalsScoredHome: (
-      result.firstHalfGoalsScoredHome / result.countHome
-    ).toFixed(4),
-    averageSecondHalfGoalsScoredHome: (
-      result.secondHalfGoalsScoredHome / result.countHome
-    ).toFixed(4),
-    averageFirstHalfGoalsScoredAway: (
-      result.firstHalfGoalsScoredAway / result.countAway
-    ).toFixed(4),
-    averageSecondHalfGoalsScoredAway: (
-      result.secondHalfGoalsScoredAway / result.countAway
-    ).toFixed(4),
-    averageFirstHalfGoalsConcededHome: (
-      result.firstHalfGoalsConcededHome / result.countHome
-    ).toFixed(4),
-    averageSecondHalfGoalsConcededHome: (
-      result.secondHalfGoalsConcededHome / result.countHome
-    ).toFixed(4),
-    averageFirstHalfGoalsConcededAway: (
-      result.firstHalfGoalsConcededAway / result.countAway
-    ).toFixed(4),
-    averageSecondHalfGoalsConcededAway: (
-      result.secondHalfGoalsConcededAway / result.countAway
-    ).toFixed(4),
-    averageGoalsConcededHome: (
-      result.totalGoalsConcededHome / result.countHome
-    ).toFixed(4),
-    averageGoalsConcededAway: (
-      result.totalGoalsConcededAway / result.countAway
-    ).toFixed(4),
-    averageCorners: (result.totalCorners / result.count).toFixed(4),
-    averageYellowCards: (result.totalYellowCards / result.count).toFixed(4),
-    averageRedCards: (result.totalRedCards / result.count).toFixed(4),
-    averageWinRatio: ((result.totalWins / result.count) * 100).toFixed(2),
-    averageLoseRatio: ((result.totalLosts / result.count) * 100).toFixed(2),
-    averageDrawRatio: ((result.totalDraws / result.count) * 100).toFixed(2),
-    averageExactNumGoals: (
-      (result.totalExactNumGoals / result.count) *
-      100
+    averageGoals: parseFloat(
+      (
+        (result.totalGoalsScoredHome +
+          result.totalGoalsScoredAway +
+          result.totalGoalsConcededHome +
+          result.totalGoalsConcededAway) /
+        result.count
+      ).toFixed(4)
+    ),
+    averageGoalsScored: parseFloat(
+      (
+        (result.totalGoalsScoredHome + result.totalGoalsScoredAway) /
+        result.count
+      ).toFixed(4)
+    ),
+    averageGoalsConceded: parseFloat(
+      (
+        (result.totalGoalsConcededHome + result.totalGoalsConcededAway) /
+        result.count
+      ).toFixed(4)
+    ),
+    averageGoalsScoredHome: parseFloat(
+      (result.totalGoalsScoredHome / result.countHome).toFixed(4)
+    ),
+    averageGoalsScoredAway: parseFloat(
+      (result.totalGoalsScoredAway / result.countAway).toFixed(4)
+    ),
+    averageFirstHalfGoalsScoredHome: parseFloat(
+      (result.firstHalfGoalsScoredHome / result.countHome).toFixed(4)
+    ),
+    averageSecondHalfGoalsScoredHome: parseFloat(
+      (result.secondHalfGoalsScoredHome / result.countHome).toFixed(4)
+    ),
+    averageFirstHalfGoalsScoredAway: parseFloat(
+      (result.firstHalfGoalsScoredAway / result.countAway).toFixed(4)
+    ),
+    averageSecondHalfGoalsScoredAway: parseFloat(
+      (result.secondHalfGoalsScoredAway / result.countAway).toFixed(4)
+    ),
+    averageFirstHalfGoalsConcededHome: parseFloat(
+      (result.firstHalfGoalsConcededHome / result.countHome).toFixed(4)
+    ),
+    averageSecondHalfGoalsConcededHome: parseFloat(
+      (result.secondHalfGoalsConcededHome / result.countHome).toFixed(4)
+    ),
+    averageFirstHalfGoalsConcededAway: parseFloat(
+      (result.firstHalfGoalsConcededAway / result.countAway).toFixed(4)
+    ),
+    averageSecondHalfGoalsConcededAway: parseFloat(
+      (result.secondHalfGoalsConcededAway / result.countAway).toFixed(4)
+    ),
+    averageGoalsConcededHome: parseFloat(
+      (result.totalGoalsConcededHome / result.countHome).toFixed(4)
+    ),
+    averageGoalsConcededAway: parseFloat(
+      (result.totalGoalsConcededAway / result.countAway).toFixed(4)
+    ),
+    averageCorners: parseFloat((result.totalCorners / result.count).toFixed(4)),
+    averageYellowCards: parseFloat(
+      (result.totalYellowCards / result.count).toFixed(4)
+    ),
+    averageRedCards: parseFloat(
+      (result.totalRedCards / result.count).toFixed(4)
+    ),
+    averageWinRatio: parseFloat(
+      ((result.totalWins / result.count) * 100).toFixed(2)
+    ),
+    averageLoseRatio: parseFloat(
+      ((result.totalLosts / result.count) * 100).toFixed(2)
+    ),
+    averageDrawRatio: parseFloat(
+      ((result.totalDraws / result.count) * 100).toFixed(2)
+    ),
+    averageExactNumGoals: parseFloat(
+      (result.totalExactNumGoals / result.count) * 100
     ).toFixed(2),
   };
+  return ret;
 };
 
 function getAllLeagues() {
@@ -717,6 +760,34 @@ function getParticipants(leagueId, seasonId) {
   return uniqueParticipants;
 }
 
+// Find all teams with proper leagueId and seasonId
+const findAllTeams = allTeams => {
+  const teams = allTeams.map(team => {
+    return {
+      leagueId: team.leagueId,
+      seasonId: team.seasonId,
+      participantId: team.teamId,
+    };
+  });
+  return teams;
+};
+
+// Collect all teams stats by calling calc function
+const calcTeamStats = allTeams => {
+  const teams = findAllTeams(allTeams);
+  const result = [];
+  teams.forEach(team =>
+    result.push(calc(team.leagueId, team.seasonId, team.participantId))
+  );
+  fs.writeFile('output.json', JSON.stringify(result), err => {
+    if (err) {
+      console.error('Error writing file:', err);
+    } else {
+      console.log('File written successfully!');
+    }
+  });
+};
+
 export {
   filterMatches,
   calcPercentages,
@@ -724,4 +795,5 @@ export {
   getAllLeagues,
   filterSeasonsByLeagueId,
   getParticipants,
+  calcTeamStats,
 };
