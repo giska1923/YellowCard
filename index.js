@@ -35,6 +35,10 @@ app.get('/be', (_, res) => {
   res.status(200).render('be');
 });
 
+app.get('/bep', (_, res) => {
+  res.status(200).render('bep');
+});
+
 app.get('/corners', (_, res) => {
   res.status(200).render('corners');
 });

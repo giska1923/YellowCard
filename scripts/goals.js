@@ -40,6 +40,7 @@ const getFixturesResults = fixtures => {
   });
 };
 
+// Function for backtesting goals averages
 const filterMatches = (
   leagueId = 271,
   seasonId = 17328,
@@ -377,6 +378,60 @@ const filterMatches = (
     : null;
 };
 
+// Function for backtesting goals percentages
+const calcPercentages = (
+  leagueId = 271,
+  seasonId = 17328,
+  options = {},
+  desiredOutcomeOptions
+) => {
+  const {
+    prcHPercentage,
+    prcGoalsH,
+    prcGoalsHCondition,
+    prcAPercentage,
+    prcGoalsA,
+    prcGoalsACondition,
+    prcHomeSCPercentage,
+    prcScoredHome,
+    prcScoredHomeCondition,
+    prcConcededHome,
+    prcConcededHomeCondition,
+    prcAwaySCPercentage,
+    prcScoredAway,
+    prcScoredAwayCondition,
+    prcConcededAway,
+    prcConcededAwayCondition,
+    prcHomeHalfGoalsPercentage,
+    prc1HHome,
+    prc1HHomeCondition,
+    prc2HHome,
+    prc2HHomeCondition,
+    prcAwayHalfGoalsPercentage,
+    prc1HAway,
+    prc1HAwayCondition,
+    prc2HAway,
+    prc2HAwayCondition,
+  } = options;
+
+  const {
+    desiredGoalsPercentage,
+    desiredPrcGoalsInGeneral,
+    desiredPrcGoalsInGeneralCondition,
+    desiredPrcGoalsHome,
+    desiredPrcGoalsHomeCondition,
+    desiredPrcGoalsAway,
+    desiredPrcGoalsAwayCondition,
+    desiredPrc1H,
+    desiredPrc1HCondition,
+    desiredPrc2H,
+    desiredPrc2HCondition,
+  } = desiredOutcomeOptions;
+
+  console.log(options);
+  console.log(desiredOutcomeOptions);
+};
+
 // Function to calculate the average number of goals
 const calc = (
   leagueId = 271,
@@ -664,6 +719,7 @@ function getParticipants(leagueId, seasonId) {
 
 export {
   filterMatches,
+  calcPercentages,
   calc,
   getAllLeagues,
   filterSeasonsByLeagueId,

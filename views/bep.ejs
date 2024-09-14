@@ -147,15 +147,15 @@
   <body>
     <div class="sidebar">
       <a href="/home" id="homeTab">Home</a>
-      <a href="/be" id="beTab" class="active">Backtesting avgs</a>
-      <a href="/bep" id="bepTab">Backtesting %</a>
+      <a href="/be" id="beTab">Backtesting avgs</a>
+      <a href="/bep" id="bepTab" class="active">Backtesting %</a>
       <a href="/goals" id="goalsTab">Goals</a>
       <a href="/corners" id="cornersTab">Corners</a>
     </div>
 
     <div class="main-content">
       <div class="container">
-        <h1>Backtesting avg goals</h1>
+        <h1>Backtesting % goals</h1>
 
         <select aria-label="League" class="league-select" id="beLeague">
           <option>League</option>
@@ -165,62 +165,67 @@
           <div class="column">
             <h2>HOME TEAM</h2>
 
-            <h4>Average goals in general</h4>
+            <h4>Goals in general</h4>
             <div class="input-group">
+              <input
+                type="text"
+                id="bePrcHPercentage"
+                placeholder="Percentage"
+              />
               <select
                 aria-label="More or less"
-                id="beAvgHComp"
+                id="bePrcHComp"
                 name="comparisonOption"
               >
                 <option value="more">more</option>
                 <option value="less">less</option>
               </select>
               <span>than</span>&nbsp;
-              <input type="text" id="beAvgH" placeholder="Number of goals" />
+              <input type="text" id="bePrcH" placeholder="Number of goals" />
             </div>
 
-            <h4>Average goals at Home</h4>
+            <h4>Goals scored/conceded</h4>
             <div class="input-group">
-              <select aria-label="More or less" id="beAvgHomeComp">
-                <option>more</option>
-                <option>less</option>
-              </select>
-              <span>than</span>&nbsp;
-              <input type="text" id="beAvgHome" placeholder="Number of goals" />
-            </div>
-
-            <h4>Average goals scored/conceded</h4>
-            <div class="input-group">
-              <select aria-label="Scored or conceded" id="beAvgHomeSCOpt">
+              <input
+                type="text"
+                id="bePrcHomeSCPercentage"
+                placeholder="Percentage"
+              />
+              <select aria-label="Scored or conceded" id="bePrcHomeSCOpt">
                 <option>scored</option>
                 <option>conceded</option>
               </select>
-              <select aria-label="More or less" id="beAvgHomeSCComp">
+              <select aria-label="More or less" id="bePrcHomeSCComp">
                 <option>more</option>
                 <option>less</option>
               </select>
               <span>than</span>&nbsp;
               <input
                 type="text"
-                id="beAvgHomeSC"
+                id="bePrcHomeSC"
                 placeholder="Number of goals"
               />
             </div>
 
-            <h4>Average goals in 1H/2H</h4>
+            <h4>Goals in 1H/2H</h4>
             <div class="input-group">
-              <select aria-label="1st or 2nd half" id="beAvgHomeHalf">
+              <input
+                type="text"
+                id="bePrcHomeHalfGoalsPercentage"
+                placeholder="Percentage"
+              />
+              <select aria-label="1st or 2nd half" id="bePrcHomeHalf">
                 <option>1st half</option>
                 <option>2nd half</option>
               </select>
-              <select aria-label="More or less" id="beAvgHomeHalfComp">
+              <select aria-label="More or less" id="bePrcHomeHalfComp">
                 <option>more</option>
                 <option>less</option>
               </select>
               <span>than</span>&nbsp;
               <input
                 type="text"
-                id="beAvgHomeHalfGoals"
+                id="bePrcHomeHalfGoals"
                 placeholder="Number of goals"
               />
             </div>
@@ -229,62 +234,67 @@
           <div class="column">
             <h2>AWAY TEAM</h2>
 
-            <h4>Average goals in general</h4>
+            <h4>Goals in general</h4>
             <div class="input-group">
+              <input
+                type="text"
+                id="bePrcAPercentage"
+                placeholder="Percentage"
+              />
               <select
                 aria-label="More or less"
-                id="beAvgAComp"
+                id="bePrcAComp"
                 name="comparisonOption"
               >
                 <option value="more">more</option>
                 <option value="less">less</option>
               </select>
               <span>than</span>&nbsp;
-              <input type="text" id="beAvgA" placeholder="Number of goals" />
+              <input type="text" id="bePrcA" placeholder="Number of goals" />
             </div>
 
-            <h4>Average goals Away</h4>
+            <h4>Goals scored/conceded</h4>
             <div class="input-group">
-              <select aria-label="More or less" id="beAvgAwayComp">
-                <option>more</option>
-                <option>less</option>
-              </select>
-              <span>than</span>&nbsp;
-              <input type="text" id="beAvgAway" placeholder="Number of goals" />
-            </div>
-
-            <h4>Average goals scored/conceded</h4>
-            <div class="input-group">
-              <select aria-label="Scored or conceded" id="beAvgAwaySCOpt">
+              <input
+                type="text"
+                id="bePrcAwaySCPercentage"
+                placeholder="Percentage"
+              />
+              <select aria-label="Scored or conceded" id="bePrcAwaySCOpt">
                 <option>scored</option>
                 <option>conceded</option>
               </select>
-              <select aria-label="More or less" id="beAvgAwaySCComp">
+              <select aria-label="More or less" id="bePrcAwaySCComp">
                 <option>more</option>
                 <option>less</option>
               </select>
               <span>than</span>&nbsp;
               <input
                 type="text"
-                id="beAvgAwaySC"
+                id="bePrcAwaySC"
                 placeholder="Number of goals"
               />
             </div>
 
-            <h4>Average goals in 1H/2H</h4>
+            <h4>Goals in 1H/2H</h4>
             <div class="input-group">
-              <select aria-label="1st or 2nd half" id="beAvgAwayHalf">
+              <input
+                type="text"
+                id="bePrcAwayHalfGoalsPercentage"
+                placeholder="Percentage"
+              />
+              <select aria-label="1st or 2nd half" id="bePrcAwayHalf">
                 <option>1st half</option>
                 <option>2nd half</option>
               </select>
-              <select aria-label="More or less" id="beAvgAwayHalfComp">
+              <select aria-label="More or less" id="bePrcAwayHalfComp">
                 <option>more</option>
                 <option>less</option>
               </select>
               <span>than</span>&nbsp;
               <input
                 type="text"
-                id="beAvgAwayHalfGoals"
+                id="bePrcAwayHalfGoals"
                 placeholder="Number of goals"
               />
             </div>
@@ -294,6 +304,11 @@
         <div class="column">
           <h2>DESIRED OUTCOME</h2>
           <div class="input-group">
+            <input
+              type="text"
+              id="beDesiredGoalsPercentage"
+              placeholder="Percentage"
+            />
             <select aria-label="Criteria" id="beDesiredCriteria">
               <option>Total number of goals</option>
               <option>1st Half</option>
@@ -319,6 +334,6 @@
       </div>
     </div>
 
-    <script type="module" src="beScript.js"></script>
+    <script type="module" src="bepScript.js"></script>
   </body>
 </html>
