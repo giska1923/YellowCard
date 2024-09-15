@@ -433,8 +433,286 @@ const calcPercentages = (
     desiredPrc2HCondition,
   } = desiredOutcomeOptions;
 
-  console.log(options);
-  console.log(desiredOutcomeOptions);
+  const myTeamsGoals = allTeamsGoals.filter(
+    team => team.seasonId === previousSeasonId
+  );
+
+  // Collect home teams that meet given criteria
+  let homeTeams = [];
+  for (const teamStats of myTeamsGoals) {
+    let totalGoalsCount = 0;
+    let totalSCGoalsCount = 0;
+    let total12HGoalsCount = 0;
+    for (const fixture of teamStats.fixtures) {
+      // Criteria 1: Percentage total number of goals
+      if (
+        prcGoalsH &&
+        prcHPercentage &&
+        compare(
+          fixture.totalGoalsScored + fixture.totalGoalsConceded,
+          prcGoalsH,
+          prcGoalsHCondition
+        )
+      ) {
+        totalGoalsCount++;
+      }
+
+      // Criteria 2: Percentage total scored/conceded number of goals
+      if (
+        (prcScoredHome || prcConcededHome) &&
+        prcHomeSCPercentage &&
+        compare(
+          prcScoredHome ? fixture.totalGoalsScored : fixture.totalGoalsConceded,
+          prcScoredHome ? prcScoredHome : prcConcededHome,
+          prcScoredHomeCondition || prcConcededHomeCondition
+        )
+      ) {
+        totalSCGoalsCount++;
+      }
+
+      // Criteria 3: Percentage 1H/2H number of goals
+      if (
+        (prc1HHome || prc2HHome) &&
+        prcHomeHalfGoalsPercentage &&
+        compare(
+          prc1HHome
+            ? fixture.firstHalfGoalsScored
+            : fixture.secondHalfGoalsScored,
+          prc1HHome ? prc1HHome : prc2HHome,
+          prc1HHomeCondition || prc2HHomeCondition
+        )
+      ) {
+        total12HGoalsCount++;
+      }
+    }
+
+    if (
+      prcHPercentage &&
+      (totalGoalsCount / teamStats.fixtures.length) * 100 < prcHPercentage
+    ) {
+      continue;
+    }
+    if (
+      prcHomeSCPercentage &&
+      (totalSCGoalsCount / teamStats.fixtures.length) * 100 <
+        prcHomeSCPercentage
+    ) {
+      continue;
+    }
+    if (
+      prcHomeHalfGoalsPercentage &&
+      (total12HGoalsCount / teamStats.fixtures.length) * 100 <
+        prcHomeHalfGoalsPercentage
+    ) {
+      continue;
+    }
+
+    homeTeams.push(teamStats);
+  }
+
+  // Collect away teams that meet given criteria
+  let awayTeams = [];
+  for (const teamStats of myTeamsGoals) {
+    let totalGoalsCount = 0;
+    let totalSCGoalsCount = 0;
+    let total12HGoalsCount = 0;
+    for (const fixture of teamStats.fixtures) {
+      // Criteria 1: Percentage total number of goals
+      if (
+        prcGoalsA &&
+        prcAPercentage &&
+        compare(
+          fixture.totalGoalsScored + fixture.totalGoalsConceded,
+          prcGoalsA,
+          prcGoalsACondition
+        )
+      ) {
+        totalGoalsCount++;
+      }
+
+      // Criteria 2: Percentage total scored/conceded number of goals
+      if (
+        (prcScoredAway || prcConcededAway) &&
+        prcAwaySCPercentage &&
+        compare(
+          prcScoredAway ? fixture.totalGoalsScored : fixture.totalGoalsConceded,
+          prcScoredAway ? prcScoredAway : prcConcededAway,
+          prcScoredAwayCondition || prcConcededAwayCondition
+        )
+      ) {
+        totalSCGoalsCount++;
+      }
+
+      // Criteria 3: Percentage 1H/2H number of goals
+      if (
+        (prc1HAway || prc2HAway) &&
+        prcAwayHalfGoalsPercentage &&
+        compare(
+          prc1HAway
+            ? fixture.firstHalfGoalsScored
+            : fixture.secondHalfGoalsScored,
+          prc1HAway ? prc1HAway : prc2HAway,
+          prc1HAwayCondition || prc2HAwayCondition
+        )
+      ) {
+        total12HGoalsCount++;
+      }
+    }
+
+    if (
+      prcAPercentage &&
+      (totalGoalsCount / teamStats.fixtures.length) * 100 < prcAPercentage
+    ) {
+      continue;
+    }
+    if (
+      prcAwaySCPercentage &&
+      (totalSCGoalsCount / teamStats.fixtures.length) * 100 <
+        prcAwaySCPercentage
+    ) {
+      continue;
+    }
+    if (
+      prcAwayHalfGoalsPercentage &&
+      (total12HGoalsCount / teamStats.fixtures.length) * 100 <
+        prcAwayHalfGoalsPercentage
+    ) {
+      continue;
+    }
+
+    awayTeams.push(teamStats);
+  }
+  const myFixtures = allFixtures.filter(
+    fixture => fixture.league_id === leagueId && fixture.season_id === seasonId
+  );
+
+  // Collect home & away fixtures that meet given criteria
+  const fixturesMetCriteria = myFixtures.filter(match => {
+    const { participants } = match;
+    const { homeParticipant, awayParticipant } =
+      participants[0].meta.location === 'home'
+        ? {
+            homeParticipant: participants[0],
+            awayParticipant: participants[1],
+          }
+        : {
+            homeParticipant: participants[1],
+            awayParticipant: participants[0],
+          };
+
+    if (homeTeams.length === 0) {
+      return awayTeams.some(stat => stat.teamId === awayParticipant.id);
+    }
+    if (awayTeams.length === 0) {
+      return homeTeams.some(stat => stat.teamId === homeParticipant.id);
+    }
+    return (
+      homeTeams.some(stat => stat.participantId === homeParticipant.id) &&
+      awayTeams.some(stat => stat.participantId === awayParticipant.id)
+    );
+  });
+
+  // Collect desired outcome fixtures that meet desired outcome criteria
+  const fixturesDesiredOutcome = fixturesMetCriteria.filter(match => {
+    let firstHalfGoalsScoredHome = 0;
+    let firstHalfGoalsScoredAway = 0;
+    let secondHalfGoalsScoredHome = 0;
+    let secondHalfGoalsScoredAway = 0;
+    // These will store cumulative scores
+    let totalGoalsHome = 0;
+    let totalGoalsAway = 0;
+    // Iterate through fixture scores array
+    match.scores.forEach(score => {
+      // Needed to calculate average number of matches with entered amount of goals
+      if (score.description === '1ST_HALF') {
+        // Handle first-half cumulative goals
+        if (score.score.participant === 'home') {
+          firstHalfGoalsScoredHome = score.score.goals;
+        } else {
+          firstHalfGoalsScoredAway = score.score.goals;
+        }
+      } else if (score.description === '2ND_HALF') {
+        // Handle second-half cumulative goals (end of match)
+        if (score.score.participant === 'home') {
+          totalGoalsHome = score.score.goals;
+        } else {
+          totalGoalsAway = score.score.goals;
+        }
+      }
+    });
+    // Calculate second-half goals by subtracting first half from total (2ND_HALF)
+    secondHalfGoalsScoredHome = totalGoalsHome - firstHalfGoalsScoredHome;
+    secondHalfGoalsScoredAway = totalGoalsAway - firstHalfGoalsScoredAway;
+
+    // Criteria 1: Average total number of goals
+    if (
+      desiredPrcGoalsInGeneral !== undefined &&
+      !compare(
+        totalGoalsHome + totalGoalsAway,
+        desiredPrcGoalsInGeneral,
+        desiredPrcGoalsInGeneralCondition
+      )
+    ) {
+      return false;
+    }
+
+    // Criteria 2: Average goals home team
+    if (
+      desiredPrcGoalsHome !== undefined &&
+      !compare(
+        totalGoalsHome,
+        desiredPrcGoalsHome,
+        desiredPrcGoalsHomeCondition
+      )
+    ) {
+      return false;
+    }
+
+    // Criteria 3: Average goals away team
+    if (
+      desiredPrcGoalsAway !== undefined &&
+      !compare(
+        totalGoalsAway,
+        desiredPrcGoalsAway,
+        desiredPrcGoalsAwayCondition
+      )
+    ) {
+      return false;
+    }
+
+    // Criteria 4: Average goals 1st half
+    if (
+      desiredPrc1H !== undefined &&
+      !compare(
+        firstHalfGoalsScoredHome + firstHalfGoalsScoredAway,
+        desiredPrc1H,
+        desiredPrc1HCondition
+      )
+    ) {
+      return false;
+    }
+
+    // Criteria 5: Average goals 2nd half
+    if (
+      desiredPrc2H !== undefined &&
+      !compare(
+        secondHalfGoalsScoredHome + secondHalfGoalsScoredAway,
+        desiredPrc2H,
+        desiredPrc2HCondition
+      )
+    ) {
+      return false;
+    }
+
+    return true;
+  });
+
+  console.log(getFixturesResults(fixturesMetCriteria));
+  console.log(getFixturesResults(fixturesDesiredOutcome));
+
+  return fixturesMetCriteria.length > 0
+    ? (fixturesDesiredOutcome.length / fixturesMetCriteria.length) * 100
+    : null;
 };
 
 // Function to calculate the average number of goals
