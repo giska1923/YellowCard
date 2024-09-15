@@ -9,6 +9,7 @@ import allFixtures from './data/allFixtures.js';
 import allLeagues from './data/allLeagues.js';
 import allSeasons from './data/allSeasons.js';
 import allTeamsGoals from './data/allTeamsGoals.js';
+import fs from 'fs';
 
 const compare = (actual, target, condition) => {
   if (condition === 'more') {
@@ -760,25 +761,32 @@ function getParticipants(leagueId, seasonId) {
   return uniqueParticipants;
 }
 
-// Find all teams with proper leagueId and seasonId
-const findAllTeams = allTeams => {
-  const teams = allTeams.map(team => {
-    return {
-      leagueId: team.leagueId,
-      seasonId: team.seasonId,
-      teamId: team.teamId,
-    };
+function getParticpantIds(leagueId, seasonId) {
+  const fixtures = allFixtures.filter(
+    fixture =>
+      fixture.league_id === Number(leagueId) &&
+      fixture.season_id === Number(seasonId)
+  );
+
+  const participantsSet = new Set();
+
+  // Iterate over each fixture and add each participant to the Set
+  fixtures.forEach(fixture => {
+    fixture.participants.forEach(participant => {
+      participantsSet.add(participant.id);
+    });
   });
-  return teams;
-};
+
+  return Array.from(participantsSet);
+}
 
 // Collect all teams stats by calling calc function
-const calcTeamStats = allTeams => {
-  const teams = findAllTeams(allTeams);
+const calcTeamStats = () => {
+  const particantIds1 = getParticpantIds(271, 19686);
+  const particantIds2 = getParticpantIds(501, 23690);
   const result = [];
-  teams.forEach(team =>
-    result.push(calc(team.leagueId, team.seasonId, team.participantId))
-  );
+  particantIds1.forEach(team => result.push(calc(271, 19686, team)));
+  particantIds2.forEach(team => result.push(calc(501, 23690, team)));
   fs.writeFile('output.json', JSON.stringify(result), err => {
     if (err) {
       console.error('Error writing file:', err);
