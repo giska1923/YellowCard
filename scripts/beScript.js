@@ -196,6 +196,7 @@ function beAlgo() {
   const leagueId = getNumValue(elements.league);
   // HARDCODED
   const seasonId = leagueId === 271 ? 21644 : 21787;
+  const previousSeasonId = leagueId === 271 ? 19686 : 19735;
 
   const options = getOptions(elements);
   const desiredOutcomeOptions = getDesiredOutcomeOptions(elements);
@@ -203,6 +204,7 @@ function beAlgo() {
   const result = filterMatches(
     leagueId,
     seasonId,
+    previousSeasonId,
     options,
     desiredOutcomeOptions
   );

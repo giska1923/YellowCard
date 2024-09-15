@@ -9,7 +9,7 @@ import allFixtures from './data/allFixtures.js';
 import allLeagues from './data/allLeagues.js';
 import allSeasons from './data/allSeasons.js';
 import allTeamsGoals from './data/allTeamsGoals.js';
-import fs from 'fs';
+//import fs from 'fs';
 
 const compare = (actual, target, condition) => {
   if (condition === 'more') {
@@ -44,7 +44,8 @@ const getFixturesResults = fixtures => {
 // Function for backtesting goals averages
 const filterMatches = (
   leagueId = 271,
-  seasonId = 17328,
+  seasonId = 21644,
+  previousSeasonId = 19686,
   options = {},
   desiredOutcomeOptions
 ) => {
@@ -88,7 +89,9 @@ const filterMatches = (
     desiredAvg2HCondition,
   } = desiredOutcomeOptions;
 
-  const myTeamsGoals = allTeamsGoals.filter(team => team.seasonId === seasonId);
+  const myTeamsGoals = allTeamsGoals.filter(
+    team => team.seasonId === previousSeasonId
+  );
 
   // Collect home teams that meet given criteria
   let homeTeams = [];
@@ -271,8 +274,8 @@ const filterMatches = (
       return homeTeams.some(stat => stat.teamId === homeParticipant.id);
     }
     return (
-      homeTeams.some(stat => stat.teamId === homeParticipant.id) &&
-      awayTeams.some(stat => stat.teamId === awayParticipant.id)
+      homeTeams.some(stat => stat.participantId === homeParticipant.id) &&
+      awayTeams.some(stat => stat.participantId === awayParticipant.id)
     );
   });
 
@@ -382,7 +385,8 @@ const filterMatches = (
 // Function for backtesting goals percentages
 const calcPercentages = (
   leagueId = 271,
-  seasonId = 17328,
+  seasonId = 21644,
+  previousSeasonId = 19686,
   options = {},
   desiredOutcomeOptions
 ) => {
@@ -436,7 +440,7 @@ const calcPercentages = (
 // Function to calculate the average number of goals
 const calc = (
   leagueId = 271,
-  seasonId = 17328,
+  seasonId = 21644,
   participantId = 1020,
   exactNumGoals = -1 // -1 don't evaluate, average number of matches with scored goals
 ) => {
@@ -783,17 +787,17 @@ function getParticpantIds(leagueId, seasonId) {
 // Collect all teams stats by calling calc function
 const calcTeamStats = () => {
   const particantIds1 = getParticpantIds(271, 19686);
-  const particantIds2 = getParticpantIds(501, 23690);
+  const particantIds2 = getParticpantIds(501, 19735);
   const result = [];
   particantIds1.forEach(team => result.push(calc(271, 19686, team)));
-  particantIds2.forEach(team => result.push(calc(501, 23690, team)));
-  fs.writeFile('output.json', JSON.stringify(result), err => {
-    if (err) {
-      console.error('Error writing file:', err);
-    } else {
-      console.log('File written successfully!');
-    }
-  });
+  particantIds2.forEach(team => result.push(calc(501, 19735, team)));
+  // fs.writeFile('output.json', JSON.stringify(result), err => {
+  //   if (err) {
+  //     console.error('Error writing file:', err);
+  //   } else {
+  //     console.log('File written successfully!');
+  //   }
+  // });
 };
 
 export {
