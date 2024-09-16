@@ -490,8 +490,8 @@ const calcPercentages = (
         prcHomeHalfGoalsPercentage &&
         compare(
           prc1HHome
-            ? fixture.firstHalfGoalsScored
-            : fixture.secondHalfGoalsScored,
+            ? fixture.firstHalfGoalsScored + fixture.firstHalfGoalsConceded
+            : fixture.secondHalfGoalsScored + fixture.secondHalfGoalsConceded,
           prc1HHome ? prc1HHome : prc2HHome,
           prc1HHomeCondition || prc2HHomeCondition
         )
@@ -566,8 +566,8 @@ const calcPercentages = (
         prcAwayHalfGoalsPercentage &&
         compare(
           prc1HAway
-            ? fixture.firstHalfGoalsScored
-            : fixture.secondHalfGoalsScored,
+            ? fixture.firstHalfGoalsScored + fixture.firstHalfGoalsConceded
+            : fixture.secondHalfGoalsScored + fixture.secondHalfGoalsConceded,
           prc1HAway ? prc1HAway : prc2HAway,
           prc1HAwayCondition || prc2HAwayCondition
         )
