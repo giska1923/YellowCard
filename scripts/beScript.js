@@ -154,7 +154,7 @@ const getDesiredOutcomeOptions = elements => {
 };
 
 const displayResult = (result, resultElement) => {
-  resultElement.innerText = result ? `${result} %` : '0%';
+  resultElement.innerText = result ? `${result} %` : 'No results!';
   resultElement.classList.remove('inactive');
 };
 
