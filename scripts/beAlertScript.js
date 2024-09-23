@@ -206,9 +206,18 @@ document.getElementById('beCalcBtn').addEventListener('click', () => {
   showPushNotification(message);
 });
 
+function playAlertSound() {
+  const audio = document.getElementById('alertSound');
+  audio.play().catch(error => {
+    console.error('Audio playback failed:', error);
+  });
+}
+
 function showPushNotification(message) {
   const notificationElement = document.getElementById('pushNotification');
   const messageElement = document.getElementById('notificationMessage');
+
+  playAlertSound();
 
   // Set the message
   messageElement.textContent = message;
