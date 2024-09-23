@@ -1014,9 +1014,8 @@ const calculateForAlerts = async (
       awayTeams.some(stat => stat.participantId === awayParticipant.id)
     );
   });
-  console.log(fixturesMetCriteria);
 
-  return null;
+  return fixturesMetCriteria;
 };
 
 // Function to calculate the average number of goals

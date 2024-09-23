@@ -167,7 +167,39 @@ async function beAlgo() {
     previousSeasonId,
     options
   );
+
+  if (result && result.length) {
+    console.log(result);
+    let delay = 0;
+
+    result.forEach(fixture => {
+      setTimeout(() => {
+        showPushNotification(
+          `${fixture.name} plays at ${getTimeString(fixture.starting_at)}`
+        );
+      }, delay);
+
+      delay += 3000;
+    });
+  }
 }
+
+const getTimeString = dateTimeString => {
+  // Create a new Date object from the string
+  const date = new Date(dateTimeString.replace(' ', 'T') + 'Z');
+  // Replace space with 'T' to make it ISO format, add Z for UTC
+
+  // Add two hours
+  date.setHours(date.getHours() + 2);
+
+  // Convert back to string in the desired format (YYYY-MM-DD HH:MM:SS)
+  const updatedDateTimeString = date
+    .toISOString()
+    .replace('T', ' ')
+    .substring(0, 19);
+
+  return updatedDateTimeString;
+};
 
 // Attach event listener to the button
 document.getElementById('beCalcBtn').addEventListener('click', beAlgo);
@@ -201,10 +233,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
 //////////////////////// NOTIFICATIONS //////////////////////////
 
-document.getElementById('beCalcBtn').addEventListener('click', () => {
-  const message = 'Alert set successfully!';
-  showPushNotification(message);
-});
+// document.getElementById('beCalcBtn').addEventListener('click', () => {
+//   const message = 'Alert set successfully!';
+//   showPushNotification(message);
+// });
 
 function playAlertSound() {
   const audio = document.getElementById('alertSound');
@@ -214,6 +246,7 @@ function playAlertSound() {
 }
 
 function showPushNotification(message) {
+  console.log('Push notification');
   const notificationElement = document.getElementById('pushNotification');
   const messageElement = document.getElementById('notificationMessage');
 
@@ -230,5 +263,5 @@ function showPushNotification(message) {
   setTimeout(() => {
     notificationElement.classList.add('hide');
     notificationElement.classList.remove('show');
-  }, 5000);
+  }, 2000);
 }
