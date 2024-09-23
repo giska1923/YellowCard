@@ -205,3 +205,28 @@ document.addEventListener('DOMContentLoaded', () => {
 
   init();
 });
+
+//////////////////////// NOTIFICATIONS //////////////////////////
+
+document.getElementById('beCalcBtn').addEventListener('click', () => {
+  const message = 'Alert set successfully!';
+  showPushNotification(message);
+});
+
+function showPushNotification(message) {
+  const notificationElement = document.getElementById('pushNotification');
+  const messageElement = document.getElementById('notificationMessage');
+
+  // Set the message
+  messageElement.textContent = message;
+
+  // Add the 'show' class and remove 'hide' to display the notification
+  notificationElement.classList.add('show');
+  notificationElement.classList.remove('hide');
+
+  // Automatically hide after 10 seconds
+  setTimeout(() => {
+    notificationElement.classList.add('hide');
+    notificationElement.classList.remove('show');
+  }, 5000);
+}
