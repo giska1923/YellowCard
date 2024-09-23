@@ -148,15 +148,15 @@
     <div class="sidebar">
       <a href="/home" id="homeTab">Home</a>
       <a href="/be" id="beTab">Backtesting avgs</a>
-      <a href="/bep" id="bepTab" class="active">Backtesting %</a>
-      <a href="/bealert" id="beAlertTab">Backtesting Alerts</a>
+      <a href="/bep" id="bepTab">Backtesting %</a>
+      <a href="/bealert" id="beAlertTab" class="active">Backtesting Alerts</a>
       <a href="/goals" id="goalsTab">Goals</a>
       <a href="/corners" id="cornersTab">Corners</a>
     </div>
 
     <div class="main-content">
       <div class="container">
-        <h1>Backtesting % goals</h1>
+        <h1>Backtesting Alerts</h1>
 
         <select aria-label="League" class="league-select" id="beLeague">
           <option>League</option>
@@ -303,36 +303,8 @@
         </div>
 
         <div class="column">
-          <h2>DESIRED OUTCOME</h2>
-          <div class="input-group">
-            <input
-              type="text"
-              id="beDesiredGoalsPercentage"
-              placeholder="Percentage"
-              hidden
-            />
-            <select aria-label="Criteria" id="beDesiredCriteria">
-              <option>Total number of goals</option>
-              <option>1st Half</option>
-              <option>2nd Half</option>
-              <option>Home</option>
-              <option>Away</option>
-            </select>
-            <select aria-label="More or less" id="beDesiredComp">
-              <option>more</option>
-              <option>less</option>
-            </select>
-            <span>than</span>&nbsp;
-            <input
-              type="text"
-              id="beDesiredGoals"
-              placeholder="Number of goals"
-            />
-          </div>
-          <button id="beCalcBtn">CALCULATE</button>
+          <button id="beCalcBtn"><b>Set alert</b></button>
         </div>
-
-        <div class="result" id="beResult">RESULT</div>
       </div>
     </div>
 

@@ -39,6 +39,10 @@ app.get('/bep', (_, res) => {
   res.status(200).render('bep');
 });
 
+app.get('/bealert', (_, res) => {
+  res.status(200).render('bealert');
+});
+
 app.get('/corners', (_, res) => {
   res.status(200).render('corners');
 });
