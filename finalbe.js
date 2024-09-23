@@ -191,6 +191,8 @@ const calc = (
         );
         const opponent = fixture.participants.find(p => p.id !== participantId);
 
+        acc.teamName = participant.name;
+
         if (participant.meta.winner) {
           if (participant.meta.location === 'home') {
             acc.homeWins++;
@@ -282,6 +284,7 @@ const calc = (
       awayDraws: 0,
       totalExactNumGoals: 0,
       fixtures: [],
+      teamName: '',
     }
   );
 
@@ -378,6 +381,32 @@ const calc = (
         result.count
       ).toFixed(4)
     ),
+    averageFirstHalfGoalsScored: parseFloat(
+      (
+        (result.firstHalfGoalsScoredHome + result.firstHalfGoalsScoredAway) /
+        result.count
+      ).toFixed(4)
+    ),
+    averageFirstHalfGoalsConceded: parseFloat(
+      (
+        (result.firstHalfGoalsConcededHome +
+          result.firstHalfGoalsConcededAway) /
+        result.count
+      ).toFixed(4)
+    ),
+    averageSecondHalfGoalsScored: parseFloat(
+      (
+        (result.secondHalfGoalsScoredHome + result.secondHalfGoalsScoredAway) /
+        result.count
+      ).toFixed(4)
+    ),
+    averageSecondHalfGoalsConceded: parseFloat(
+      (
+        (result.secondHalfGoalsConcededHome +
+          result.secondHalfGoalsConcededAway) /
+        result.count
+      ).toFixed(4)
+    ),
     averageFirstHalfGoalsScoredHome: parseFloat(
       (result.firstHalfGoalsScoredHome / result.countHome).toFixed(4)
     ),
@@ -439,6 +468,7 @@ const calcPercentages = myTeamsGoals => {
       leagueId: teamStats.leagueId,
       seasonId: teamStats.seasonId,
       participantId: teamStats.participantId,
+      teamName: teamStats.teamName,
       seasonName: teamStats.seasonName,
       prcByCriteria: [],
     };
