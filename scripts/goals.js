@@ -8,8 +8,10 @@
 import allFixtures from './data/allFixtures.js';
 import allLeagues from './data/allLeagues.js';
 import allSeasons from './data/allSeasons.js';
+import allTeamsLastSeason from './data/allTeamsLastSeason.js';
 import allTeamsGoals from './data/allTeamsGoals.js';
-// import fs from 'fs';
+import appConfig from './config.js';
+//import axios from 'axios';
 
 const compare = (actual, target, condition) => {
   if (condition === 'more') {
@@ -18,6 +20,30 @@ const compare = (actual, target, condition) => {
     return actual < target;
   }
   return false;
+};
+
+const getAllPages = async url => {
+  const allData = [];
+  let page = 1;
+  let hasMore = true;
+
+  while (hasMore) {
+    const response = await axios.get(`${url}&page=${page}`, {
+      headers: {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      },
+    });
+    const data = response.data;
+
+    allData.push(data.data);
+
+    hasMore = data.pagination.has_more;
+    page = page + 1;
+  }
+
+  return allData;
 };
 
 const getFixturesResults = fixtures => {
@@ -740,12 +766,260 @@ const calcPercentages = (
     : null;
 };
 
-const calculateForAlerts = (
+const calculateForAlerts = async (
   leagueId = 271,
   seasonId = 21644,
   previousSeasonId = 19686,
   options = {}
-) => {};
+) => {
+  const {
+    avgGoalsH,
+    avgGoalsHCondition,
+    avgGoalsA,
+    avgGoalsACondition,
+    avgGoalsHome,
+    avgGoalsHomeCondition,
+    avgGoalsAway,
+    avgGoalsAwayCondition,
+    avgScoredHome,
+    avgScoredHomeCondition,
+    avgConcededHome,
+    avgConcededHomeCondition,
+    avgScoredAway,
+    avgScoredAwayCondition,
+    avgConcededAway,
+    avgConcededAwayCondition,
+    avg1HHome,
+    avg1HHomeCondition,
+    avg2HHome,
+    avg2HHomeCondition,
+    avg1HAway,
+    avg1HAwayCondition,
+    avg2HAway,
+    avg2HAwayCondition,
+  } = options;
+
+  const myTeamsGoals = allTeamsLastSeason.filter(
+    team => team.seasonId === previousSeasonId
+  );
+
+  // Collect home teams that meet given criteria
+  let homeTeams = [];
+  const homeCriteriaExist =
+    avgGoalsH ||
+    avgGoalsHome ||
+    avgScoredHome ||
+    avgConcededHome ||
+    avg1HHome ||
+    avg2HHome;
+
+  if (homeCriteriaExist) {
+    for (const teamStats of myTeamsGoals) {
+      // Criteria 1: Average total number of goals
+      if (
+        avgGoalsH !== undefined &&
+        !compare(teamStats.averageGoals, avgGoalsH, avgGoalsHCondition)
+      ) {
+        continue;
+      }
+
+      // Criteria 2: Average goals at home
+      if (
+        avgGoalsHome !== undefined &&
+        !compare(
+          teamStats.averageGoalsHome,
+          avgGoalsHome,
+          avgGoalsHomeCondition
+        )
+      ) {
+        continue;
+      }
+
+      // Criteria 3: Average goals home team scored
+      if (
+        avgScoredHome !== undefined &&
+        !compare(
+          teamStats.averageGoalsScored,
+          avgScoredHome,
+          avgScoredHomeCondition
+        )
+      ) {
+        continue;
+      }
+
+      // Criteria 4: Average goals home team conceded
+      if (
+        avgConcededHome !== undefined &&
+        !compare(
+          teamStats.averageGoalsConceded,
+          avgConcededHome,
+          avgConcededHomeCondition
+        )
+      ) {
+        continue;
+      }
+
+      // Criteria 5: Average goals home team scored in 1H
+      if (
+        avg1HHome !== undefined &&
+        !compare(teamStats.averageFirstHalfGoals, avg1HHome, avg1HHomeCondition)
+      ) {
+        continue;
+      }
+
+      // Criteria 6: Average goals home team scored in 2H
+      if (
+        avg2HHome !== undefined &&
+        !compare(
+          teamStats.averageSecondHalfGoals,
+          avg2HHome,
+          avg2HHomeCondition
+        )
+      ) {
+        continue;
+      }
+
+      homeTeams.push(teamStats);
+    }
+  }
+
+  // Collect away teams that meet given criteria
+  let awayTeams = [];
+  const awayCriteriaExist =
+    avgGoalsA ||
+    avgGoalsAway ||
+    avgScoredAway ||
+    avgConcededAway ||
+    avg1HAway ||
+    avg2HAway;
+
+  if (awayCriteriaExist) {
+    for (const teamStats of myTeamsGoals) {
+      // Criteria 1: Average total number of goals
+      if (
+        avgGoalsA !== undefined &&
+        !compare(teamStats.averageGoals, avgGoalsA, avgGoalsACondition)
+      ) {
+        continue;
+      }
+
+      // Criteria 2: Average goals away
+      if (
+        avgGoalsAway !== undefined &&
+        !compare(
+          teamStats.averageGoalsAway,
+          avgGoalsAway,
+          avgGoalsAwayCondition
+        )
+      ) {
+        continue;
+      }
+
+      // Criteria 3: Average goals away team scored
+      if (
+        avgScoredAway !== undefined &&
+        !compare(
+          teamStats.averageGoalsScored,
+          avgScoredAway,
+          avgScoredAwayCondition
+        )
+      ) {
+        continue;
+      }
+
+      // Criteria 4: Average goals away team conceded
+      if (
+        avgConcededAway !== undefined &&
+        !compare(
+          teamStats.averageGoalsConceded,
+          avgConcededAway,
+          avgConcededAwayCondition
+        )
+      ) {
+        continue;
+      }
+
+      // Criteria 5: Average goals away team scored in 1H
+      if (
+        avg1HAway !== undefined &&
+        !compare(teamStats.averageFirstHalfGoals, avg1HAway, avg1HAwayCondition)
+      ) {
+        continue;
+      }
+
+      // Criteria 6: Average goals away team scored in 2H
+      if (
+        avg2HAway !== undefined &&
+        !compare(
+          teamStats.averageSecondHalfGoals,
+          avg2HAway,
+          avg2HAwayCondition
+        )
+      ) {
+        continue;
+      }
+
+      awayTeams.push(teamStats);
+    }
+  }
+
+  if (
+    (homeTeams.length === 0 && homeCriteriaExist) ||
+    (awayTeams.length === 0 && awayCriteriaExist)
+  ) {
+    return null;
+  }
+
+  const start = new Date();
+  const startFormatted = start.toISOString().slice(0, 10);
+
+  const end = new Date();
+  end.setDate(start.getDate() + 7);
+  const endFormatted = end.toISOString().slice(0, 10);
+
+  try {
+    const data = await getAllPages(
+      `${appConfig.EXTERNAL_API}fixtures/between/${startFormatted}/${endFormatted}?api_token=${appConfig.API_TOKEN}&includes=events;statistics;scores;participants&per_page=${appConfig.PER_PAGE}`
+    );
+
+    // mapTypeIdsToNames(data);
+    // const flattenedArray = flattenNestedArray(data);
+    console.log(data);
+  } catch (err) {
+    console.log(err.message);
+    return null;
+  }
+
+  const myFixtures = allFixtures.filter(
+    fixture => fixture.league_id === leagueId && fixture.season_id === seasonId
+  );
+
+  // Collect home & away fixtures that meet given criteria
+  const fixturesMetCriteria = myFixtures.filter(match => {
+    const { participants } = match;
+    const { homeParticipant, awayParticipant } =
+      participants[0].meta.location === 'home'
+        ? {
+            homeParticipant: participants[0],
+            awayParticipant: participants[1],
+          }
+        : {
+            homeParticipant: participants[1],
+            awayParticipant: participants[0],
+          };
+
+    if (homeTeams.length === 0) {
+      return awayTeams.some(stat => stat.participantId === awayParticipant.id);
+    }
+    if (awayTeams.length === 0) {
+      return homeTeams.some(stat => stat.participantId === homeParticipant.id);
+    }
+    return (
+      homeTeams.some(stat => stat.participantId === homeParticipant.id) &&
+      awayTeams.some(stat => stat.participantId === awayParticipant.id)
+    );
+  });
+};
 
 // Function to calculate the average number of goals
 const calc = (

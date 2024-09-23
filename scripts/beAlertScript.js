@@ -122,12 +122,7 @@ const getOptions = elements => {
   };
 };
 
-const displayResult = (result, resultElement) => {
-  resultElement.innerText = result ? `${result} %` : 'No results!';
-  resultElement.classList.remove('inactive');
-};
-
-function beAlgo() {
+async function beAlgo() {
   console.log('beAlgo - Button clicked');
 
   const elements = {
@@ -166,14 +161,12 @@ function beAlgo() {
 
   const options = getOptions(elements);
 
-  const result = calculateForAlerts(
+  const result = await calculateForAlerts(
     leagueId,
     seasonId,
     previousSeasonId,
     options
   );
-
-  displayResult(result, elements.resultElement);
 }
 
 // Attach event listener to the button
