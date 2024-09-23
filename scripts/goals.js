@@ -44,8 +44,6 @@ const getAllPages = async url => {
     hasMore = data.pagination.has_more;
     page = page + 1;
   }
-  console.log(`allData length: ${allData.length}`);
-  console.log(`allData: ${allData}`);
 
   return allData;
 };
@@ -981,22 +979,15 @@ const calculateForAlerts = async (
   end.setDate(start.getDate() + 7);
   const endFormatted = end.toISOString().slice(0, 10);
 
+  let myFixtures = [];
   try {
-    const data = await getAllPages(
-      `${appConfig.EXTERNAL_API}fixtures/between/${startFormatted}/${endFormatted}?api_token=${appConfig.API_TOKEN}&includes=events;statistics;scores;participants&per_page=${appConfig.PER_PAGE}`
+    myFixtures = await getAllPages(
+      `${appConfig.EXTERNAL_API}fixtures/between/${startFormatted}/${endFormatted}?api_token=${appConfig.API_TOKEN}&includes=participants&per_page=${appConfig.PER_PAGE}`
     );
-
-    // mapTypeIdsToNames(data);
-    // const flattenedArray = flattenNestedArray(data);
-    console.log(data);
   } catch (err) {
     console.log(err.message);
     return null;
   }
-
-  const myFixtures = allFixtures.filter(
-    fixture => fixture.league_id === leagueId && fixture.season_id === seasonId
-  );
 
   // Collect home & away fixtures that meet given criteria
   const fixturesMetCriteria = myFixtures.filter(match => {
@@ -1023,6 +1014,9 @@ const calculateForAlerts = async (
       awayTeams.some(stat => stat.participantId === awayParticipant.id)
     );
   });
+  console.log(fixturesMetCriteria);
+
+  return null;
 };
 
 // Function to calculate the average number of goals
