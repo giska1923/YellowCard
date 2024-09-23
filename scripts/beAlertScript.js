@@ -1,4 +1,4 @@
-import { calcPercentages, getAllLeagues } from './goals.js';
+import { calculateForAlerts, getAllLeagues } from './goals.js';
 
 const getNumValue = inputVal => {
   return inputVal === '' ? undefined : Number(inputVal);
@@ -22,73 +22,71 @@ const getHalfGoalsOptions = (half, comp, goals) => {
 
 const getHomeTeamOptions = elements => {
   const [
-    prcScoredHomeCondition,
-    prcScoredHome,
-    prcConcededHomeCondition,
-    prcConcededHome,
+    avgScoredHomeCondition,
+    avgScoredHome,
+    avgConcededHomeCondition,
+    avgConcededHome,
   ] = getScoredOrConcededOptions(
-    elements.prcHomeSCOpt,
-    elements.prcHomeSCComp,
-    elements.prcHomeSC
+    elements.avgHomeSCOpt,
+    elements.avgHomeSCComp,
+    elements.avgHomeSC
   );
 
-  const [prc1HHomeCondition, prc1HHome, prc2HHomeCondition, prc2HHome] =
+  const [avg1HHomeCondition, avg1HHome, avg2HHomeCondition, avg2HHome] =
     getHalfGoalsOptions(
-      elements.prcHomeHalf,
-      elements.prcHomeHalfComp,
-      elements.prcHomeHalfGoals
+      elements.avgHomeHalf,
+      elements.avgHomeHalfComp,
+      elements.avgHomeHalfGoals
     );
 
   return {
-    prcHPercentage: elements.prcHPercentage,
-    prcGoalsH: elements.prcH,
-    prcGoalsHCondition: elements.prcHComp,
-    prcHomeSCPercentage: elements.prcHomeSCPercentage,
-    prcScoredHome,
-    prcScoredHomeCondition,
-    prcConcededHome,
-    prcConcededHomeCondition,
-    prcHomeHalfGoalsPercentage: elements.prcHomeHalfGoalsPercentage,
-    prc1HHome,
-    prc1HHomeCondition,
-    prc2HHome,
-    prc2HHomeCondition,
+    avgGoalsH: elements.avgH,
+    avgGoalsHCondition: elements.avgHComp,
+    avgGoalsHome: elements.avgHome,
+    avgGoalsHomeCondition: elements.avgHomeComp,
+    avgScoredHome,
+    avgScoredHomeCondition,
+    avgConcededHome,
+    avgConcededHomeCondition,
+    avg1HHome,
+    avg1HHomeCondition,
+    avg2HHome,
+    avg2HHomeCondition,
   };
 };
 
 const getAwayTeamOptions = elements => {
   const [
-    prcScoredAwayCondition,
-    prcScoredAway,
-    prcConcededAwayCondition,
-    prcConcededAway,
+    avgScoredAwayCondition,
+    avgScoredAway,
+    avgConcededAwayCondition,
+    avgConcededAway,
   ] = getScoredOrConcededOptions(
-    elements.prcAwaySCOpt,
-    elements.prcAwaySCComp,
-    elements.prcAwaySC
+    elements.avgAwaySCOpt,
+    elements.avgAwaySCComp,
+    elements.avgAwaySC
   );
 
-  const [prc1HAwayCondition, prc1HAway, prc2HAwayCondition, prc2HAway] =
+  const [avg1HAwayCondition, avg1HAway, avg2HAwayCondition, avg2HAway] =
     getHalfGoalsOptions(
-      elements.prcAwayHalf,
-      elements.prcAwayHalfComp,
-      elements.prcAwayHalfGoals
+      elements.avgAwayHalf,
+      elements.avgAwayHalfComp,
+      elements.avgAwayHalfGoals
     );
 
   return {
-    prcAPercentage: elements.prcAPercentage,
-    prcGoalsA: elements.prcA,
-    prcGoalsACondition: elements.prcAComp,
-    prcAwaySCPercentage: elements.prcAwaySCPercentage,
-    prcScoredAway,
-    prcScoredAwayCondition,
-    prcConcededAway,
-    prcConcededAwayCondition,
-    prcAwayHalfGoalsPercentage: elements.prcAwayHalfGoalsPercentage,
-    prc1HAway,
-    prc1HAwayCondition,
-    prc2HAway,
-    prc2HAwayCondition,
+    avgGoalsA: elements.avgA,
+    avgGoalsACondition: elements.avgAComp,
+    avgGoalsAway: elements.avgAway,
+    avgGoalsAwayCondition: elements.avgAwayComp,
+    avgScoredAway,
+    avgScoredAwayCondition,
+    avgConcededAway,
+    avgConcededAwayCondition,
+    avg1HAway,
+    avg1HAwayCondition,
+    avg2HAway,
+    avg2HAwayCondition,
   };
 };
 
@@ -97,69 +95,31 @@ const getOptions = elements => {
   const awayOptions = getAwayTeamOptions(elements);
 
   return {
-    prcHPercentage: homeOptions.prcHPercentage,
-    prcGoalsH: homeOptions.prcGoalsH,
-    prcGoalsHCondition: homeOptions.prcGoalsHCondition,
-    prcAPercentage: awayOptions.prcAPercentage,
-    prcGoalsA: awayOptions.prcGoalsA,
-    prcGoalsACondition: awayOptions.prcGoalsACondition,
-    prcHomeSCPercentage: homeOptions.prcHomeSCPercentage,
-    prcScoredHome: homeOptions.prcScoredHome,
-    prcScoredHomeCondition: homeOptions.prcScoredHomeCondition,
-    prcConcededHome: homeOptions.prcConcededHome,
-    prcConcededHomeCondition: homeOptions.prcConcededHomeCondition,
-    prcAwaySCPercentage: awayOptions.prcAwaySCPercentage,
-    prcScoredAway: awayOptions.prcScoredAway,
-    prcScoredAwayCondition: awayOptions.prcScoredAwayCondition,
-    prcConcededAway: awayOptions.prcConcededAway,
-    prcConcededAwayCondition: awayOptions.prcConcededAwayCondition,
-    prcHomeHalfGoalsPercentage: homeOptions.prcHomeHalfGoalsPercentage,
-    prc1HHome: homeOptions.prc1HHome,
-    prc1HHomeCondition: homeOptions.prc1HHomeCondition,
-    prc2HHome: homeOptions.prc2HHome,
-    prc2HHomeCondition: homeOptions.prc2HHomeCondition,
-    prcAwayHalfGoalsPercentage: awayOptions.prcAwayHalfGoalsPercentage,
-    prc1HAway: awayOptions.prc1HAway,
-    prc1HAwayCondition: awayOptions.prc1HAwayCondition,
-    prc2HAway: awayOptions.prc2HAway,
-    prc2HAwayCondition: awayOptions.prc2HAwayCondition,
+    avgGoalsH: homeOptions.avgGoalsH,
+    avgGoalsHCondition: homeOptions.avgGoalsHCondition,
+    avgGoalsA: awayOptions.avgGoalsA,
+    avgGoalsACondition: awayOptions.avgGoalsACondition,
+    avgGoalsHome: homeOptions.avgGoalsHome,
+    avgGoalsHomeCondition: homeOptions.avgGoalsHomeCondition,
+    avgGoalsAway: awayOptions.avgGoalsAway,
+    avgGoalsAwayCondition: awayOptions.avgGoalsAwayCondition,
+    avgScoredHome: homeOptions.avgScoredHome,
+    avgScoredHomeCondition: homeOptions.avgScoredHomeCondition,
+    avgConcededHome: homeOptions.avgConcededHome,
+    avgConcededHomeCondition: homeOptions.avgConcededHomeCondition,
+    avgScoredAway: awayOptions.avgScoredAway,
+    avgScoredAwayCondition: awayOptions.avgScoredAwayCondition,
+    avgConcededAway: awayOptions.avgConcededAway,
+    avgConcededAwayCondition: awayOptions.avgConcededAwayCondition,
+    avg1HHome: homeOptions.avg1HHome,
+    avg1HHomeCondition: homeOptions.avg1HHomeCondition,
+    avg2HHome: homeOptions.avg2HHome,
+    avg2HHomeCondition: homeOptions.avg2HHomeCondition,
+    avg1HAway: awayOptions.avg1HAway,
+    avg1HAwayCondition: awayOptions.avg1HAwayCondition,
+    avg2HAway: awayOptions.avg2HAway,
+    avg2HAwayCondition: awayOptions.avg2HAwayCondition,
   };
-};
-
-const getDesiredOutcomeOptions = elements => {
-  switch (elements.desiredCriteria) {
-    case 'Total number of goals':
-      return {
-        desiredGoalsPercentage: elements.desiredGoalsPercentage,
-        desiredPrcGoalsInGeneral: elements.desiredGoals,
-        desiredPrcGoalsInGeneralCondition: elements.desiredComp,
-      };
-    case '1st Half':
-      return {
-        desiredGoalsPercentage: elements.desiredGoalsPercentage,
-        desiredPrc1H: elements.desiredGoals,
-        desiredPrc1HCondition: elements.desiredComp,
-      };
-    case '2nd Half':
-      return {
-        desiredGoalsPercentage: elements.desiredGoalsPercentage,
-        desiredPrc2H: elements.desiredGoals,
-        desiredPrc2HCondition: elements.desiredComp,
-      };
-    case 'Home':
-      return {
-        desiredGoalsPercentage: elements.desiredGoalsPercentage,
-        desiredPrcGoalsHome: elements.desiredGoals,
-        desiredPrcGoalsHomeCondition: elements.desiredComp,
-      };
-    case 'Away':
-    default:
-      return {
-        desiredGoalsPercentage: elements.desiredGoalsPercentage,
-        desiredPrcGoalsAway: elements.desiredGoals,
-        desiredPrcGoalsAwayCondition: elements.desiredComp,
-      };
-  }
 };
 
 const displayResult = (result, resultElement) => {
@@ -173,66 +133,44 @@ function beAlgo() {
   const elements = {
     resultElement: document.getElementById('beResult'),
     league: document.getElementById('beLeague').value,
-    prcHPercentage: getNumValue(
-      document.getElementById('bePrcHPercentage').value
+    avgHComp: document.getElementById('beAvgHComp').value,
+    avgH: getNumValue(document.getElementById('beAvgH').value),
+    avgHomeComp: document.getElementById('beAvgHomeComp').value,
+    avgHome: getNumValue(document.getElementById('beAvgHome').value),
+    avgHomeSCOpt: document.getElementById('beAvgHomeSCOpt').value,
+    avgHomeSCComp: document.getElementById('beAvgHomeSCComp').value,
+    avgHomeSC: getNumValue(document.getElementById('beAvgHomeSC').value),
+    avgHomeHalf: document.getElementById('beAvgHomeHalf').value,
+    avgHomeHalfComp: document.getElementById('beAvgHomeHalfComp').value,
+    avgHomeHalfGoals: getNumValue(
+      document.getElementById('beAvgHomeHalfGoals').value
     ),
-    prcHComp: document.getElementById('bePrcHComp').value,
-    prcH: getNumValue(document.getElementById('bePrcH').value),
-    prcHomeSCPercentage: getNumValue(
-      document.getElementById('bePrcHomeSCPercentage').value
+    avgAComp: document.getElementById('beAvgAComp').value,
+    avgA: getNumValue(document.getElementById('beAvgA').value),
+    avgAwayComp: document.getElementById('beAvgAwayComp').value,
+    avgAway: getNumValue(document.getElementById('beAvgAway').value),
+    avgAwaySCOpt: document.getElementById('beAvgAwaySCOpt').value,
+    avgAwaySCComp: document.getElementById('beAvgAwaySCComp').value,
+    avgAwaySC: getNumValue(document.getElementById('beAvgAwaySC').value),
+    avgAwayHalf: document.getElementById('beAvgAwayHalf').value,
+    avgAwayHalfComp: document.getElementById('beAvgAwayHalfComp').value,
+    avgAwayHalfGoals: getNumValue(
+      document.getElementById('beAvgAwayHalfGoals').value
     ),
-    prcHomeSCOpt: document.getElementById('bePrcHomeSCOpt').value,
-    prcHomeSCComp: document.getElementById('bePrcHomeSCComp').value,
-    prcHomeSC: getNumValue(document.getElementById('bePrcHomeSC').value),
-    prcHomeHalfGoalsPercentage: getNumValue(
-      document.getElementById('bePrcHomeHalfGoalsPercentage').value
-    ),
-    prcHomeHalf: document.getElementById('bePrcHomeHalf').value,
-    prcHomeHalfComp: document.getElementById('bePrcHomeHalfComp').value,
-    prcHomeHalfGoals: getNumValue(
-      document.getElementById('bePrcHomeHalfGoals').value
-    ),
-    prcAPercentage: getNumValue(
-      document.getElementById('bePrcAPercentage').value
-    ),
-    prcAComp: document.getElementById('bePrcAComp').value,
-    prcA: getNumValue(document.getElementById('bePrcA').value),
-    prcAwaySCPercentage: getNumValue(
-      document.getElementById('bePrcAwaySCPercentage').value
-    ),
-    prcAwaySCOpt: document.getElementById('bePrcAwaySCOpt').value,
-    prcAwaySCComp: document.getElementById('bePrcAwaySCComp').value,
-    prcAwaySC: getNumValue(document.getElementById('bePrcAwaySC').value),
-    prcAwayHalfGoalsPercentage: getNumValue(
-      document.getElementById('bePrcAwayHalfGoalsPercentage').value
-    ),
-    prcAwayHalf: document.getElementById('bePrcAwayHalf').value,
-    prcAwayHalfComp: document.getElementById('bePrcAwayHalfComp').value,
-    prcAwayHalfGoals: getNumValue(
-      document.getElementById('bePrcAwayHalfGoals').value
-    ),
-    desiredGoalsPercentage: getNumValue(
-      document.getElementById('beDesiredGoalsPercentage').value
-    ),
-    desiredCriteria: document.getElementById('beDesiredCriteria').value,
-    desiredComp: document.getElementById('beDesiredComp').value,
-    desiredGoals: getNumValue(document.getElementById('beDesiredGoals').value),
   };
 
   const leagueId = getNumValue(elements.league);
   // HARDCODED
-  const seasonId = leagueId === 271 ? 21644 : 21787;
-  const previousSeasonId = leagueId === 271 ? 19686 : 19735;
+  const seasonId = leagueId === 271 ? 23584 : 23690;
+  const previousSeasonId = leagueId === 271 ? 21644 : 21787;
 
   const options = getOptions(elements);
-  const desiredOutcomeOptions = getDesiredOutcomeOptions(elements);
 
-  const result = calcPercentages(
+  const result = calculateForAlerts(
     leagueId,
     seasonId,
     previousSeasonId,
-    options,
-    desiredOutcomeOptions
+    options
   );
 
   displayResult(result, elements.resultElement);

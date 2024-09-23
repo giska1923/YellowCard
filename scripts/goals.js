@@ -740,6 +740,13 @@ const calcPercentages = (
     : null;
 };
 
+const calculateForAlerts = (
+  leagueId = 271,
+  seasonId = 21644,
+  previousSeasonId = 19686,
+  options = {}
+) => {};
+
 // Function to calculate the average number of goals
 const calc = (
   leagueId = 271,
@@ -1136,6 +1143,7 @@ const calcTeamStats = () => {
 export {
   filterMatches,
   calcPercentages,
+  calculateForAlerts,
   calc,
   getAllLeagues,
   filterSeasonsByLeagueId,
