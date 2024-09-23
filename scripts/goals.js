@@ -23,12 +23,14 @@ const compare = (actual, target, condition) => {
 };
 
 const getAllPages = async url => {
-  const allData = [];
+  let allData = [];
   let page = 1;
   let hasMore = true;
 
   while (hasMore) {
-    const response = await axios.get(`${url}&page=${page}`, {
+    const proxyUrl = 'https://thingproxy.freeboard.io/fetch/';
+
+    const response = await axios.get(`${proxyUrl}${url}&page=${page}`, {
       headers: {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Headers': 'Content-Type',
@@ -37,11 +39,13 @@ const getAllPages = async url => {
     });
     const data = response.data;
 
-    allData.push(data.data);
+    allData = [...allData, ...data.data];
 
     hasMore = data.pagination.has_more;
     page = page + 1;
   }
+  console.log(`allData length: ${allData.length}`);
+  console.log(`allData: ${allData}`);
 
   return allData;
 };
